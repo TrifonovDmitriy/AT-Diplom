@@ -3,6 +3,7 @@ package web.steps;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
 
@@ -21,9 +22,18 @@ public class CommonWebSteps {
         element.shouldBe(visible, Duration.ofSeconds(5)).sendKeys(text);
         return this;
     }
-    @Step("Подтверждение alerta")
+    @Step("Подтверждение алерта")
     public CommonWebSteps acceptAlert(){
         Selenide.switchTo().alert().accept();
+        return this;
+    }
+    @Step("Подтверждение алерта с текстом '{expectedAlertText}'")
+    public CommonWebSteps acceptAlert(String expectedAlertText){
+        String actualAlertText = Selenide.switchTo().alert().getText();
+        if(actualAlertText.equals(expectedAlertText))
+            Selenide.switchTo().alert().accept();
+        else
+            Assertions.fail("Ожидаемый текст алерта не совпал с фактическим. Ожидалось: " + expectedAlertText + ", на самом деле: " + actualAlertText);
         return this;
     }
 }

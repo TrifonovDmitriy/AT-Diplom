@@ -9,4 +9,5 @@ public class MainPage {
     public SelenideElement fieldEnterPass(){
         return XPathBuilder.element("input","name","password");
     }
+    public SelenideElement buttonGo(){return  XPathBuilder.containsElement("button","text()"," GO");}
 }
