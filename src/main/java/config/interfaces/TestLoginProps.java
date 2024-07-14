@@ -3,7 +3,6 @@ import org.aeonbits.owner.Config;
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @Config.Sources({
         "system:properties",
-//        "system:webdriver",
         "file:src/test/resources/configs/login.properties"
 })
 

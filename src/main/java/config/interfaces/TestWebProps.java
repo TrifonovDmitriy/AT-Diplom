@@ -3,13 +3,10 @@ import org.aeonbits.owner.Config;
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @Config.Sources({
         "system:properties",
-//        "system:webdriver",
         "file:src/test/resources/configs/web.properties"
 })
 
 public interface TestWebProps extends Config{
-    @Key("selenid.url")
-    String selenidUrl();
 
     @Key("webdriverLocation")
     String webdriverLocation();

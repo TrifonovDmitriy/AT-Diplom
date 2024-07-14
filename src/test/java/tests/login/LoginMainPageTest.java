@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import steps.auth.UI.Login;
 
-public class LoginMainPage extends GeneralBasic {
+public class LoginMainPageTest extends GeneralBasic {
     @Test
     @DisplayName("Вход в систему")
     public void loginTest(){
