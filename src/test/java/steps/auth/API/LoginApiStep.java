@@ -1,5 +1,6 @@
 package steps.auth.API;
 
+import config.classes.MainProps;
 import io.qameta.allure.Step;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class LoginApiStep {
         given().when()
                 .header("Content-Type", "application/json;charset=utf-8")
                 .body(request)
-                .post("http://77.50.236.203:4879/login")
+                .post(MainProps.environmentProps.apiUrl() +"/login")
                 .then()
                 .assertThat().statusCode(202)
                 .extract().body().asString();
