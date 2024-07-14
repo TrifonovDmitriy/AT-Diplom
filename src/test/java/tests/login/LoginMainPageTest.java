@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import steps.auth.API.LoginApiStep;
 import steps.auth.UI.LoginStep;
 
+/**
+ * Класс для теста авторизации на главной странице и API
+ */
 public class LoginMainPageTest extends GeneralBasic {
     @Test
     @DisplayName("Вход в систему. UI Test (Позитивный)")

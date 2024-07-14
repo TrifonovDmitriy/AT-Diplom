@@ -9,6 +9,10 @@ import web.steps.CommonWebSteps;
 
 import static com.codeborne.selenide.Selenide.open;
 
+/**
+ * Класс описывает шаги авторизации UI на странице
+ */
+
 public class LoginStep extends GeneralBasic {
     @Step("Авторизация")
     public static void authorization(){

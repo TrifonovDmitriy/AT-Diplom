@@ -9,6 +9,9 @@ import java.nio.file.Paths;
 
 import static io.restassured.RestAssured.given;
 
+/**
+ * Класс авторизации через API
+ */
 public class LoginApiStep {
     private String request = null;
 

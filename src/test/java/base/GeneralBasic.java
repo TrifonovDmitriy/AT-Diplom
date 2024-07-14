@@ -6,6 +6,9 @@ import config.interfaces.TestWebProps;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+/**
+ * Общий класс для всех тестов
+ */
 public class GeneralBasic {
     public static TestWebProps props = MainProps.webProps;
 
@@ -18,7 +21,7 @@ public class GeneralBasic {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setBrowserName("Chrome");
         capabilities.setVersion(props.webdriverVersion());
-        capabilities.setCapability("enableVNC",true);
+        capabilities.setCapability("enableVNC", true);
         if (WebDriverLocation != null) {
             System.setProperty("webdriver.chrome.driver", props.webdriverLocation());
             System.setProperty("selenide.browser", "Chrome");

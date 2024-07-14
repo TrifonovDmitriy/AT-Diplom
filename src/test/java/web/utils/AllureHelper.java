@@ -13,6 +13,9 @@ import java.io.ByteArrayInputStream;
 public class AllureHelper extends GeneralBasic {
     private static final Logger log = LoggerFactory.getLogger(AllureHelper.class);
 
+/**
+ * Метод для создания скриншотов
+ */
     public static void takeScreenshotWeb(String screenName) {
         try {
             byte[] screen = ((TakesScreenshot) WebDriverRunner.getWebDriver()).getScreenshotAs(OutputType.BYTES);
