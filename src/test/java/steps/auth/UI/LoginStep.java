@@ -9,7 +9,7 @@ import web.steps.CommonWebSteps;
 
 import static com.codeborne.selenide.Selenide.open;
 
-public class Login extends GeneralBasic {
+public class LoginStep extends GeneralBasic {
     @Step("Авторизация")
     public static void authorization(){
         open(MainProps.webProps.getUrl());

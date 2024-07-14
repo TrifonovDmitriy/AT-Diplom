@@ -9,11 +9,11 @@ import java.nio.file.Paths;
 
 import static io.restassured.RestAssured.given;
 
-public class LoginApi {
+public class LoginApiStep {
     private String request = null;
 
     @Step("Авторизация API")
-    public void authorizationAPI(String userName, String password, boolean isPositive) {
+    public void authorizationAPI(String userName, String password) {
         try {
             request = new String(Files.readAllBytes(Paths.get("src/test/resources/requests/login.json")),
                     StandardCharsets.UTF_8)
@@ -22,18 +22,13 @@ public class LoginApi {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        int code;
-        if (isPositive)
-            code = 202;
-        else
-            code = 403;
 
         given().when()
                 .header("Content-Type", "application/json;charset=utf-8")
                 .body(request)
                 .post("http://77.50.236.203:4879/login")
                 .then()
-                .assertThat().statusCode(code)
+                .assertThat().statusCode(202)
                 .extract().body().asString();
     }
 }
