@@ -13,12 +13,10 @@ public class Login extends GeneralBasic {
     @Step("Авторизация")
     public static void authorization(){
         open(MainProps.webProps.getUrl());
-        new CommonWebSteps().clickElement("Поле ввода логина", new MainPage().fieldEnterEmail());
-        new CommonWebSteps().sendKeys("логин", new MainPage().fieldEnterEmail(), "user@pflb.ru");
-        new CommonWebSteps().clickElement("Поле ввода пароля", new MainPage().fieldEnterEmail());
-        new CommonWebSteps().sendKeys("пароль", new MainPage().fieldEnterPass(), "user");
-        new CommonWebSteps().clickElement("GO", new MainPage().buttonGo());
-        new CommonWebSteps().acceptAlert("Successful authorization");
+        new CommonWebSteps().sendKeys("Enter your email", new MainPage().fieldEnterEmail(), "user@pflb.ru")
+        .sendKeys("Enter your password", new MainPage().fieldEnterPass(), "user")
+        .clickElement("GO", new MainPage().buttonGo())
+        .acceptAlert("Successful authorization");
         Selenide.closeWebDriver();
     }
 }
