@@ -1,0 +1,8 @@
+{
+  "age": 21,
+  "firstName": "${firstName}",
+  "id": 10,
+  "money": 250000,
+  "secondName": "${secondName}",
+  "sex": "${sex}"
+}
