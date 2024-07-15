@@ -1,7 +1,6 @@
 package steps.auth.UI;
 
 import base.GeneralBasic;
-import com.codeborne.selenide.Selenide;
 import config.classes.MainProps;
 import io.qameta.allure.Step;
 import web.pages.MainPage;
@@ -21,6 +20,5 @@ public class LoginStep extends GeneralBasic {
         .sendKeys("Enter your password", new MainPage().fieldEnterPass(), "user")
         .clickElement("GO", new MainPage().buttonGo())
         .acceptAlert("Successful authorization");
-        Selenide.closeWebDriver();
     }
 }

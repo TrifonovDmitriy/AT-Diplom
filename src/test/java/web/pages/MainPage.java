@@ -1,6 +1,8 @@
 package web.pages;
 
 import com.codeborne.selenide.SelenideElement;
+import web.utils.XPathBuilder;
+
 /**
  * Класс возвращает элементы страницы авторизации
  */

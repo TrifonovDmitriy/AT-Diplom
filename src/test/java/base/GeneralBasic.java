@@ -1,8 +1,11 @@
 package base;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.WebDriverRunner;
 import config.classes.MainProps;
 import config.interfaces.TestWebProps;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -26,5 +29,10 @@ public class GeneralBasic {
             System.setProperty("webdriver.chrome.driver", props.webdriverLocation());
             System.setProperty("selenide.browser", "Chrome");
         }
+    }
+    @AfterAll
+    public static void after(){
+        Selenide.closeWebDriver();
+        WebDriverRunner.closeWebDriver();
     }
 }
