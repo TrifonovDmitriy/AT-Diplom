@@ -6,8 +6,8 @@ import steps.users.API.UsersApiStep;
 
 public class UsersTest {
     @Test
-    @DisplayName("Создание пользователя")
+    @DisplayName("Создание пользователя, API (Позитивный)")
     public void userCreate(){
-        new UsersApiStep().createUserApi( "Иван", "Петров", "MALE");
+        new UsersApiStep().createUserApi( "55","Михаил", "20500","Кутузов", "MALE");
     }
 }

@@ -15,13 +15,13 @@ import static io.restassured.RestAssured.given;
 public class UsersApiStep {
     private String request=null;
     @Step("Создание пользователя API")
-    public void createUserApi(String firstName, String secondName, String sex){
+    public void createUserApi(String age, String firstName, String money, String secondName, String sex){
         try{
             request = new String(Files.readAllBytes(Paths.get("src/test/resources/requests/createUser.json")),
                     StandardCharsets.UTF_8)
-//                    .replace("${age}", age)
+                    .replace("${age}", age)
                     .replace("${firstName}", firstName)
-//                    .replace("${money}", money)
+                    .replace("${money}", money)
                     .replace("${secondName}",secondName)
                     .replace("${sex}", sex);
         } catch (IOException e) {
