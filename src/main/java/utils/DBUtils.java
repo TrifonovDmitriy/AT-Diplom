@@ -4,6 +4,9 @@ import config.classes.MainProps;
 
 import java.sql.*;
 
+/**
+ * Класс подключения к БД и других методов для работы с БД
+ */
 public class DBUtils {
     public static Connection driverManager() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");

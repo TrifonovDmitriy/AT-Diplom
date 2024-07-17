@@ -12,4 +12,10 @@ public interface TestLoginProps extends Config{
 
     @Key("sql.password")
     String sqlPassword();
+
+    @Key("api.login")
+    String apiLogin();
+
+    @Key("api.password")
+    String apiPassword();
 }
