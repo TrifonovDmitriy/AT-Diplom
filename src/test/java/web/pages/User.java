@@ -1,13 +1,24 @@
 package web.pages;
 
-import lombok.Builder;
+import com.codeborne.selenide.SelenideElement;
+import web.utils.XPathBuilder;
 
-@Builder
 public class User {
-    private String firstName;
-    private String lastName;
-    private int age;
-    private String sex;
-    private int money;
 
+    public SelenideElement fieldEnterFirstName() {
+        return XPathBuilder.element("input", "id", "first_name_send");
+    }
+    public SelenideElement fieldEnterLastName() {
+        return XPathBuilder.element("input", "id", "last_name_send");
+    }
+    public SelenideElement radioSexMale(){
+        return XPathBuilder.element("input","value","MALE");
+    }
+    public SelenideElement fieldEnterMoney(){
+        return XPathBuilder.element("input","step","0.01");
+    }
+    public SelenideElement buttonPush(){
+        return XPathBuilder.containsElement("button","@class","tableButton btn");
+    }
 }
+
