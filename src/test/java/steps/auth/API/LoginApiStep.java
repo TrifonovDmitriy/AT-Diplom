@@ -47,7 +47,7 @@ public class LoginApiStep {
 
     public Headers httpHeaderManager() {
         Header contentType = new Header("Content-Type", "application/json;charset=utf-8");
-        Header authorization = new Header("Authorization", "Bearer " + new LoginApiStep().authorizationAPI("user@pflb.ru", "user"));
+        Header authorization = new Header("Authorization", "Bearer " + new LoginApiStep().authorizationAPI(MainProps.loginProps.apiLogin(), MainProps.loginProps.apiPassword()));
         List<Header> headerList = new ArrayList<>();
         headerList.add(contentType);
         headerList.add(authorization);
