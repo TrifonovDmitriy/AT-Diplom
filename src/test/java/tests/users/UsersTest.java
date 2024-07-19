@@ -7,9 +7,15 @@ import steps.users.UI.UsersUIStep;
 
 public class UsersTest {
     @Test
-    @DisplayName("Создание пользователя, API (Негативный, без указания возраста)")
-    public void userCreateApiWithoutAge() {
-        new UsersApiStep().createUserApi("", "Михаил", "20500", "Кутузов", "MALE");
+    @DisplayName("Создание пользователя, API")
+    public void userCreateApi() {
+        new UsersApiStep().createUserApi();
+    }
+
+    @Test
+    @DisplayName("Создание и удаление пользователя, API")
+    public void userDeleteApi() {
+        new UsersApiStep().createUserApi().deleteUserApi();
     }
 
     @Test

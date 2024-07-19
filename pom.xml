@@ -28,6 +28,7 @@
         <restAssured.version>5.4.0</restAssured.version>
         <selenide.version>7.3.3</selenide.version>
         <allure-junit5.version>2.25.0</allure-junit5.version>
+        <gson.version>2.11.0</gson.version>
 
     </properties>
     <dependencies>
@@ -137,7 +138,12 @@
             <artifactId>webdrivermanager</artifactId>
             <version>5.8.0</version>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
