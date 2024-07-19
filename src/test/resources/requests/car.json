@@ -1,0 +1,7 @@
+{
+  "engineType": "${engineType}",
+  "id": "${id}",
+  "mark": "${mark}",
+  "model": "${model}",
+  "price": "${price}"
+}
