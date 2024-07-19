@@ -13,16 +13,17 @@ import java.nio.file.Paths;
 import static io.restassured.RestAssured.given;
 
 public class UsersApiStep {
-    private String request=null;
+    private String request = null;
+
     @Step("Создание пользователя API")
-    public void createUserApi(String age, String firstName, String money, String secondName, String sex){
-        try{
+    public void createUserApi(String age, String firstName, String money, String secondName, String sex) {
+        try {
             request = new String(Files.readAllBytes(Paths.get("src/test/resources/requests/createUser.json")),
                     StandardCharsets.UTF_8)
                     .replace("${age}", age)
                     .replace("${firstName}", firstName)
                     .replace("${money}", money)
-                    .replace("${secondName}",secondName)
+                    .replace("${secondName}", secondName)
                     .replace("${sex}", sex);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -30,7 +31,7 @@ public class UsersApiStep {
         String response = given().when()
                 .headers(new LoginApiStep().httpHeaderManager())
                 .body(request)
-                .post(MainProps.environmentProps.apiUrl() +"/user")
+                .post(MainProps.environmentProps.apiUrl() + "/user")
                 .then()
                 .assertThat().statusCode(201)
                 .extract().body().asString();
