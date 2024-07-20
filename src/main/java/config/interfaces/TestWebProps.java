@@ -1,12 +1,14 @@
 package config.interfaces;
+
 import org.aeonbits.owner.Config;
+
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @Config.Sources({
         "system:properties",
         "file:src/test/resources/configs/web.properties"
 })
 
-public interface TestWebProps extends Config{
+public interface TestWebProps extends Config {
 
     @Key("webdriverLocation")
     String webdriverLocation();

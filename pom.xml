@@ -30,6 +30,7 @@
         <allure-junit5.version>2.25.0</allure-junit5.version>
         <gson.version>2.11.0</gson.version>
         <testng.version>7.10.2</testng.version>
+
     </properties>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
@@ -138,13 +139,13 @@
             <artifactId>webdrivermanager</artifactId>
             <version>5.8.0</version>
         </dependency>
-        <!--  https://mvnrepository.com/artifact/com.google.code.gson/gson  -->
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
-        <!--  https://mvnrepository.com/artifact/org.testng/testng  -->
+        <!-- https://mvnrepository.com/artifact/org.testng/testng -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
