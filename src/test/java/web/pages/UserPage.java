@@ -13,6 +13,10 @@ public class UserPage {
         return XPathBuilder.element("input", "id", "last_name_send");
     }
 
+    public SelenideElement fieldEnterAge() {
+        return XPathBuilder.element("input", "id", "age_send");
+    }
+
     public SelenideElement radioSexMale() {
         return XPathBuilder.element("input", "value", "MALE");
     }
@@ -27,6 +31,10 @@ public class UserPage {
 
     public SelenideElement getStatus() {
         return XPathBuilder.containsElement("button", "@class", "status btn");
+    }
+
+    public SelenideElement getNewUserID() {
+        return XPathBuilder.containsElement("button", "@class", "newId btn");
     }
 }
 
