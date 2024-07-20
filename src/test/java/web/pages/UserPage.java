@@ -24,5 +24,9 @@ public class UserPage {
     public SelenideElement buttonPush() {
         return XPathBuilder.containsElement("button", "@class", "tableButton btn");
     }
+
+    public SelenideElement getStatus() {
+        return XPathBuilder.containsElement("button", "@class", "status btn");
+    }
 }
 

@@ -4,21 +4,20 @@ import config.classes.MainProps;
 import dto.User;
 import io.qameta.allure.Step;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import steps.auth.API.LoginApiStep;
+import utils.DBUtils;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
 
 public class UsersApiStep {
 //    private String request = null;
     private int userID;
-    private static final Logger log = LoggerFactory.getLogger(UsersApiStep.class);
 
     //метод создаёт пользователя по заменяемым атрибутам файла json
 //    @Step("Создание пользователя API")
@@ -49,11 +48,11 @@ public class UsersApiStep {
     @Step("Создание пользователя API")
     public UsersApiStep createUserApi() {
         User user = User.builder()
-                .age(80)
+                .age(95)
                 .firstName("Ivan")
                 .id(10)
-                .money(45000)
-                .secondName("Petrov")
+                .money(95900)
+                .secondName("Sidorov")
                 .sex("MALE")
                 .build();
         String userJson = user.toJson();
@@ -66,8 +65,8 @@ public class UsersApiStep {
                 .extract().body().asString();
         JSONObject jsonObject = new JSONObject(response);
         userID = jsonObject.getInt("id");
-          System.out.println("Создан пользователь с ID: " + userID);
-        log.info("Создан пользователь с ID: " + userID);
+        Logger.getGlobal().info("Создан пользователь с ID: " + userID);
+        DBUtils.getUser(userID);
         return this;
     }
     @Step("Удаление пользователя/API")
