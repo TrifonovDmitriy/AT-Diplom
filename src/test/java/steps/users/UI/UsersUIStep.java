@@ -27,4 +27,16 @@ public class UsersUIStep {
                 .sendKeys("Money", new UserPage().fieldEnterMoney(), "27000")
                 .clickElement("Push to API", new UserPage().buttonPush());
     }
+
+    public static void createUserUiWithDoubleAge() {
+        LoginStep.authorization();
+        new CommonWebSteps().clickElement("Users", new MainPage().UsersList())
+                .clickElement("Create new", new MainPage().CreateNewUser());
+        new CommonWebSteps().sendKeys("First Name", new UserPage().fieldEnterFirstName(), "Николай")
+                .sendKeys("Last Name", new UserPage().fieldEnterLastName(), "Гоголь")
+                .sendKeys("Age",new UserPage().fieldEnterAge(),"100.5")
+                .clickElement("Sex", new UserPage().radioSexMale())
+                .sendKeys("Money", new UserPage().fieldEnterMoney(), "0")
+                .clickElement("Push to API", new UserPage().buttonPush());
+    }
 }

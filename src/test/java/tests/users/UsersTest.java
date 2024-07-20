@@ -35,7 +35,7 @@ public class UsersTest {
         new UserPage().getNewUserID().should(Condition.visible);
         String actualTextStatus = new UserPage().getStatus().getText();
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals("Status: Successfully pushed, code: 201", actualTextStatus, "Ожидаемый текст, не соответсвует действительному!");
+        softAssert.assertEquals("Status: Successfully pushed, code: 201", actualTextStatus, "Ожидаемый текст не соответствует действительному!");
         String actualTextUser = new UserPage().getNewUserID().getText();
         softAssert.assertTrue(actualTextUser.contains("New user ID"), "Поле не содержит: New user ID");
         softAssert.assertAll();
@@ -46,6 +46,15 @@ public class UsersTest {
     public void userCreateUIWithoutAge() {
         UsersUIStep.createUserUiWithoutAge();
         String actualTextStatus = new UserPage().getStatus().getText();
-        Assertions.assertEquals("Status: Invalid request data", actualTextStatus, "Ожидаемый текст, не соответсвует действительному!");
+        Assertions.assertEquals("Status: Invalid request data", actualTextStatus, "Ожидаемый текст не соответствует действительному!");
+    }
+
+    @Test
+    @Owner("Lozhkina Elena")
+    @DisplayName("Создание пользователя, UI (Негативный, введен возраст c плавающей точкой)")
+    public void userCreateUiWithDoubleAge() {
+        UsersUIStep.createUserUiWithDoubleAge();
+        String actualTextStatus = new UserPage().getStatus().getText();
+        Assertions.assertEquals("Status: Invalid request data", actualTextStatus, "Ожидаемый текст не соответствует действительному!");
     }
 }
