@@ -26,4 +26,9 @@ public class MainPage {
     public SelenideElement CreateNewUser() {
         return XPathBuilder.containsElement("a", "text()", "Create new");
     }
+    public SelenideElement addMoney() {
+        return XPathBuilder.elementText("a", "text", "Add money");
+    }
+
+
 }

@@ -57,4 +57,15 @@ public class UsersTest {
         String actualTextStatus = new UserPage().getStatus().getText();
         Assertions.assertEquals("Status: Invalid request data", actualTextStatus, "Ожидаемый текст не соответствует действительному!");
     }
+
+    @Test
+    @Owner("Lozhkina Elena")
+    @DisplayName("Добавление денег, UI")
+    public void addMoneyUiTest() {
+        UsersUIStep.createUserUi();
+        String userID = new UserPage().getNewUserID().should(Condition.visible).getText();
+        UsersUIStep.addMoneyUi(UsersUIStep.extractID(userID));
+        String actualStatusCode = new UserPage().getStatus().getText();
+        Assertions.assertTrue(actualStatusCode.contains("Status: Successfully pushed, code: 200"), "Ожидаемый текст не соответствует действительному!");
+    }
 }
