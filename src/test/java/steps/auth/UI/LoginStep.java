@@ -14,11 +14,11 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class LoginStep extends GeneralBasic {
     @Step("Авторизация")
-    public static void authorization(){
+    public static void authorization() {
         open(MainProps.webProps.getUrl());
         new CommonWebSteps().sendKeys("Enter your email", new MainPage().fieldEnterEmail(), "user@pflb.ru")
-        .sendKeys("Enter your password", new MainPage().fieldEnterPass(), "user")
-        .clickElement("GO", new MainPage().buttonGo())
-        .acceptAlert("Successful authorization");
+                .sendKeys("Enter your password", new MainPage().fieldEnterPass(), "user")
+                .clickElement("GO", new MainPage().buttonGo())
+                .acceptAlert("Successful authorization");
     }
 }

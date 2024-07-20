@@ -10,7 +10,7 @@ public class SimpleTest {
 
     @Test
     @DisplayName("Соединение с БД")
-    public void sqlConnect(){
+    public void sqlConnect() {
         Assertions.assertEquals("Успешное соединение!", connectToDataBase());
     }
 }

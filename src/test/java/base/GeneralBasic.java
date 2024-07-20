@@ -30,8 +30,9 @@ public class GeneralBasic {
             System.setProperty("selenide.browser", "Chrome");
         }
     }
+
     @AfterAll
-    public static void after(){
+    public static void after() {
         Selenide.closeWebDriver();
         WebDriverRunner.closeWebDriver();
     }
