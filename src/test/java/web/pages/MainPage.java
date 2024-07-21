@@ -32,4 +32,7 @@ public class MainPage {
     public SelenideElement readAllCars(){
         return XPathBuilder.containsElement("a","text()","Read all");
     }
+    public SelenideElement addMoney() {
+        return XPathBuilder.elementText("a", "text", "Add money");
+    }
 }
