@@ -1,21 +1,21 @@
 package tests.users;
 
 import base.GeneralBasic;
-import com.codeborne.selenide.Condition;
+import config.classes.MainProps;
 import io.qameta.allure.Owner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testng.asserts.SoftAssert;
+import steps.car.ui.CarsUiStep;
 import steps.users.API.UsersApiStep;
 import steps.users.UI.UsersUIStep;
 import web.pages.UserPage;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Condition.visible;
-import static java.lang.Thread.sleep;
-
-
+import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.sleep;
 
 public class UsersTest extends GeneralBasic {
     @Test
@@ -82,5 +82,18 @@ public class UsersTest extends GeneralBasic {
         UsersUIStep.addMoneyUi(UsersUIStep.extractID(userID));
         String actualStatusCode = new UserPage().getStatus().shouldBe(visible, Duration.ofSeconds(30)).getText();
         Assertions.assertTrue(actualStatusCode.contains("Status: Successfully pushed, code: 200"), "Ожидаемый текст не соответствует действительному!");
+    }
+    @Test
+    @DisplayName("Покупка автомобиля")
+    @Owner("Trifonov Dmitriy")
+    public void bayCar(){
+        UsersUIStep.createUserUi();
+        String userID = new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(30)).getText();
+        System.out.println(userID);
+        new CarsUiStep().createNewCar();
+        String carID = new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(30)).getText();
+        System.out.println(carID);
+        UsersUIStep.BayCarUi(userID,carID);
+        sleep(5000);
     }
 }

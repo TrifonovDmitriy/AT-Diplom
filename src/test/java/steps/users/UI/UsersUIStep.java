@@ -1,6 +1,7 @@
 package steps.users.UI;
 
 import steps.auth.UI.LoginStep;
+import web.pages.CarsPage;
 import web.pages.MainPage;
 import web.pages.UserPage;
 import web.steps.CommonWebSteps;
@@ -59,5 +60,11 @@ public class UsersUIStep {
         new CommonWebSteps().sendKeys("User ID", new UserPage().fieldEnterUserId(), extractId)
                 .sendKeys("Money", new UserPage().fieldEnterMoney(),"2000")
                 .clickElement("Push to API", new UserPage().buttonPush());
+    }
+    public static void BayCarUi(String userID, String carID) {
+        new CommonWebSteps().clickElement("Users", new MainPage().usersList())
+                .clickElement("Bay or sell car", new MainPage().bayOrSellCar());
+        new CommonWebSteps().sendKeys("User ID", new UserPage().fieldEnterUserId(), extractID(userID))
+                .sendKeys("Car ID", new CarsPage().fieldEnterCarId(), extractID(carID));
     }
 }

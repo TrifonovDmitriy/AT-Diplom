@@ -35,4 +35,9 @@ public class MainPage {
     public SelenideElement addMoney() {
         return XPathBuilder.elementText("a", "text", "Add money");
     }
+    public SelenideElement createNewCar() {
+        return XPathBuilder.numberElement("div", "class", "dropdown-menu show","//a[2]");
+    }
+    public SelenideElement bayOrSellCar() {return XPathBuilder.elementText("a", "text", "Buy or sell car");
+    }
 }
