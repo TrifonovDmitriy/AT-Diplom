@@ -28,6 +28,13 @@ public class UsersTest {
     }
 
     @Test
+    @Owner("Lozhkina Elena")
+    @DisplayName("Создание пользователя и добавление денег, API")
+    public void giveMoneyApi() {
+        new UsersApiStep().createUserApi().giveMoneyToUser();
+    }
+
+    @Test
     @Owner("Trifonov Dmitriy")
     @DisplayName("Создание пользователя, UI")
     public void userCreateUi() {
