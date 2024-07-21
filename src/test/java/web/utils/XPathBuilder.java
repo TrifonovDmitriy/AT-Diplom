@@ -19,4 +19,10 @@ public class XPathBuilder {
     public static SelenideElement containsElement(String tag, String attribute, String name) {
         return $x("//" + tag + "[contains(" + attribute + ",'" + name + "')]");
     }
+    public static SelenideElement containsElementInclude(String tag, String attribute, String name,String include) {
+        return $x("//" + tag + "[contains(" + attribute + ",'" + name + "')]"+include);
+    }
+    public static SelenideElement numberElement(String tag, String attribute, String param, String number) {
+        return $x("//" + tag + "[@" + attribute + "='" + param + "']"+"["+number+"]");
+    }
 }

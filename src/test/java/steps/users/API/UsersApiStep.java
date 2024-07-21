@@ -49,11 +49,11 @@ public class UsersApiStep {
     @Step("Создание пользователя API")
     public UsersApiStep createUserApi() {
         User user = User.builder()
-                .age(95)
-                .firstName("Ivan")
+                .age(25)
+                .firstName("Michael")
                 .id(10)
-                .money(95900)
-                .secondName("Sidorov")
+                .money(155000)
+                .secondName("Kubikov")
                 .sex("MALE")
                 .build();
         String userJson = user.toJson();
@@ -80,6 +80,19 @@ public class UsersApiStep {
                 .then()
                 .assertThat().statusCode(204)
                 .extract().body().asString();
+        DBUtils.getUser(userID);
+    }
+    @Step("Удаление пользователя/API")
+    public void deleteUserApi(int userID){
+        given().when()
+                .headers(new LoginApiStep().httpHeaderManager())
+                .pathParam("userID", userID)
+                .when()
+                .delete(MainProps.environmentProps.apiUrl() + "/user/{userID}")
+                .then()
+                .assertThat().statusCode(204)
+                .extract().body().asString();
+        DBUtils.getUser(userID);
     }
 
     @Step("Добавление денег пользователю/API")

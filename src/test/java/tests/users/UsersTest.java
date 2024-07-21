@@ -1,8 +1,7 @@
 package tests.users;
 
+import base.GeneralBasic;
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selenide;
-import com.codeborne.selenide.junit5.SoftAssertsExtension;
 import io.qameta.allure.Owner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +16,8 @@ import static com.codeborne.selenide.Condition.visible;
 import static java.lang.Thread.sleep;
 
 
-public class UsersTest {
+
+public class UsersTest extends GeneralBasic {
     @Test
     @Owner("Trifonov Dmitriy")
     @DisplayName("Создание пользователя, API")
@@ -31,7 +31,6 @@ public class UsersTest {
     public void userDeleteApi() {
         new UsersApiStep().createUserApi().deleteUserApi();
     }
-
     @Test
     @Owner("Lozhkina Elena")
     @DisplayName("Создание пользователя и добавление денег, API")
@@ -50,6 +49,9 @@ public class UsersTest {
         softAssert.assertEquals("Status: Successfully pushed, code: 201", actualTextStatus, "Ожидаемый текст не соответствует действительному!");
         String actualTextUser = new UserPage().getNewUserID().getText();
         softAssert.assertTrue(actualTextUser.contains("New user ID"), "Поле не содержит: New user ID");
+        String userIdStr = actualTextUser.replaceAll("\\D+","");
+        int userID = Integer.parseInt(userIdStr);
+        new UsersApiStep().deleteUserApi(userID);
         softAssert.assertAll();
     }
     @Test

@@ -19,16 +19,17 @@ public class MainPage {
         return XPathBuilder.containsElement("button", "text()", " GO");
     }
 
-    public SelenideElement UsersList() {
+    public SelenideElement usersList() {
         return XPathBuilder.containsElement("a", "text()", "Users");
     }
 
-    public SelenideElement CreateNewUser() {
+    public SelenideElement createNewUser() {
         return XPathBuilder.containsElement("a", "text()", "Create new");
     }
-    public SelenideElement addMoney() {
-        return XPathBuilder.elementText("a", "text", "Add money");
+    public SelenideElement carsList() {
+        return XPathBuilder.containsElement("a","text()","Cars");
     }
-
-
+    public SelenideElement readAllCars(){
+        return XPathBuilder.containsElement("a","text()","Read all");
+    }
 }
