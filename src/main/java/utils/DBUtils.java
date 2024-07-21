@@ -76,4 +76,18 @@ public class DBUtils {
         );
         return map.toString();
     }
+    @Step("Получение информации о доме из БД")
+    public static String getHouse(int houseId){
+        HashMap<String,String> map = getListFromBd(
+                "Select * from public.house where id ='" + houseId + "'"
+        );
+        return map.toString();
+    }
+    @Step("Получение информации о парковочных местах из БД")
+    public static String getParkingPlaces(int houseId){
+        HashMap<String,String> map = getListFromBd(
+                "Select * from public.parking_place where id ='" + houseId +"'"
+        );
+        return map.toString();
+    }
 }
