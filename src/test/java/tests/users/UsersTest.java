@@ -11,6 +11,11 @@ import org.testng.asserts.SoftAssert;
 import steps.users.API.UsersApiStep;
 import steps.users.UI.UsersUIStep;
 import web.pages.UserPage;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Condition.visible;
+import static java.lang.Thread.sleep;
+
 
 public class UsersTest {
     @Test
@@ -39,7 +44,7 @@ public class UsersTest {
     @DisplayName("Создание пользователя, UI")
     public void userCreateUi() {
         UsersUIStep.createUserUi();
-        new UserPage().getNewUserID().should(Condition.visible);
+        new UserPage().getNewUserID().should(visible);
         String actualTextStatus = new UserPage().getStatus().getText();
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals("Status: Successfully pushed, code: 201", actualTextStatus, "Ожидаемый текст не соответствует действительному!");
@@ -70,9 +75,10 @@ public class UsersTest {
     @DisplayName("Добавление денег, UI")
     public void addMoneyUiTest() {
         UsersUIStep.createUserUi();
-        String userID = new UserPage().getNewUserID().should(Condition.visible).getText();
+        String userID = new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(30)).getText();
+        System.out.println(userID);
         UsersUIStep.addMoneyUi(UsersUIStep.extractID(userID));
-        String actualStatusCode = new UserPage().getStatus().getText();
+        String actualStatusCode = new UserPage().getStatus().shouldBe(visible, Duration.ofSeconds(30)).getText();
         Assertions.assertTrue(actualStatusCode.contains("Status: Successfully pushed, code: 200"), "Ожидаемый текст не соответствует действительному!");
     }
 }
