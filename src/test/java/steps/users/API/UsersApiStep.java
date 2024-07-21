@@ -18,6 +18,7 @@ import static io.restassured.RestAssured.given;
 public class UsersApiStep {
 //    private String request = null;
     private int userID;
+    private int amount = 2000;
 
     //метод создаёт пользователя по заменяемым атрибутам файла json
 //    @Step("Создание пользователя API")
@@ -91,6 +92,23 @@ public class UsersApiStep {
                 .then()
                 .assertThat().statusCode(204)
                 .extract().body().asString();
+        DBUtils.getUser(userID);
+    }
+
+    @Step("Добавление денег пользователю/API")
+    public void giveMoneyToUser(){
+        String responseAfterGiveMoney = given().when()
+                .headers(new LoginApiStep().httpHeaderManager())
+                .pathParam("userID", userID)
+                .pathParam("money", amount)
+                .when()
+                .post(MainProps.environmentProps.apiUrl() + "/user/{userID}/money/{money}")
+                .then()
+                .assertThat().statusCode(200)
+                .extract().body().asString();
+        JSONObject jsonObject = new JSONObject(responseAfterGiveMoney);
+        userID = jsonObject.getInt("id");
+        Logger.getGlobal().info("Пользователю с ID " + userID + " начислены деньги: " + amount);
         DBUtils.getUser(userID);
     }
 }
