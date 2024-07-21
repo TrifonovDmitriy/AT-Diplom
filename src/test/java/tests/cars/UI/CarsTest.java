@@ -25,6 +25,6 @@ public class CarsTest extends GeneralBasic {
         int minID = Integer.parseInt(minIDstr);
         String idTableCarsStr = new CarsPage().idCarsTable().getText();
         int idTableCars = Integer.parseInt(idTableCarsStr);
-        Assertions.assertEquals(idTableCars,minID,"Страница не отсортированна от минимального ID");
+        Assertions.assertEquals(idTableCars,minID,"Таблица не отсортированна по минимальному ID");
     }
 }
