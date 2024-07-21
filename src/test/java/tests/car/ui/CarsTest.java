@@ -1,4 +1,4 @@
-package tests.cars.UI;
+package tests.car.ui;
 
 import base.GeneralBasic;
 import io.qameta.allure.Owner;
