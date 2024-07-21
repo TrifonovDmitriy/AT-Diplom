@@ -18,8 +18,7 @@ public class CarsTest extends GeneralBasic {
     @Owner("Trifonov Dmitriy")
     public void sortByCarsID(){
         new CarsUiStep().carsReadAll();
-        sleep(2000);
-        new CommonWebSteps().clickElement("Click ID", new CarsPage().buttonIdCars());
+        new CommonWebSteps().clickElement("ID", new CarsPage().buttonIdCars());
         sleep(2000);
         String minIDstr = DBUtils.getMinCarID().replaceAll("\\D+","");
         int minID = Integer.parseInt(minIDstr);
