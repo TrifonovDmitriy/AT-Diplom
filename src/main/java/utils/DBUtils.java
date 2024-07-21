@@ -19,7 +19,6 @@ public class DBUtils {
                 MainProps.loginProps.sqlLogin(),
                 MainProps.loginProps.sqlPassword());
     }
-
     public static String connectToDataBase() {
         String str = null;
         try (Connection connection = driverManager()) {
@@ -30,7 +29,6 @@ public class DBUtils {
         }
         return str;
     }
-
     public static HashMap<String, String> selectValueMapFromDataBase(String select) {
         HashMap<String, String> result = new HashMap<>();
         try (Connection connection = driverManager();
@@ -57,11 +55,17 @@ public class DBUtils {
         }
         return map;
     }
-
     @Step("Получение пользователя из базы данных")
     public static String getUser(int userID){
         HashMap<String,String> map =getListFromBd(
                 "Select * from public.person where id ='" + userID+"'"
+        );
+        return map.toString();
+    }
+    @Step("Получение минимального ID автомобиля")
+    public static String getMinCarID(){
+        HashMap<String,String> map =getListFromBd(
+                "Select MIN(id) from public.car"
         );
         return map.toString();
     }
