@@ -45,15 +45,4 @@ public class CommonWebSteps {
             Assertions.fail("Ожидаемый текст алерта не совпал с фактическим. Ожидалось: " + expectedAlertText + ", на самом деле: " + actualAlertText);
         return this;
     }
-
-    @Step("Ввод в элемент '{elementName}' текст '{id}'")
-    public CommonWebSteps sendID(String elementName, SelenideElement element, String id) {
-        AllureHelper.takeScreenshotWeb("Ввод текста в поле " + elementName + ". Скриншот ДО");
-        element.shouldBe(visible, Duration.ofSeconds(5)).sendKeys(id);
-        AllureHelper.takeScreenshotWeb("Ввод текста в поле " + elementName + ". Скриншот ПОСЛЕ");
-        return this;
-    }
-
-
-
 }

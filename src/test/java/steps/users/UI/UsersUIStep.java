@@ -56,8 +56,7 @@ public class UsersUIStep {
     public static void addMoneyUi(String extractId) {
         new CommonWebSteps().clickElement("Users", new MainPage().UsersList())
                 .clickElement("Add money", new MainPage().addMoney());
-
-        new CommonWebSteps().sendID("User ID", new UserPage().fieldEnterUserId(), extractId)
+        new CommonWebSteps().sendKeys("User ID", new UserPage().fieldEnterUserId(), extractId)
                 .sendKeys("Money", new UserPage().fieldEnterMoney(),"2000")
                 .clickElement("Push to API", new UserPage().buttonPush());
     }
