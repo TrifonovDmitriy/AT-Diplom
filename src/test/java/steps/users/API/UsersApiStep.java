@@ -48,11 +48,11 @@ public class UsersApiStep {
     @Step("Создание пользователя API")
     public UsersApiStep createUserApi() {
         User user = User.builder()
-                .age(95)
-                .firstName("Ivan")
+                .age(25)
+                .firstName("Michael")
                 .id(10)
-                .money(95900)
-                .secondName("Sidorov")
+                .money(155000)
+                .secondName("Kubikov")
                 .sex("MALE")
                 .build();
         String userJson = user.toJson();

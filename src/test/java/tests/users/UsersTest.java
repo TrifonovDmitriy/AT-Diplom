@@ -26,7 +26,6 @@ public class UsersTest extends GeneralBasic {
     public void userDeleteApi() {
         new UsersApiStep().createUserApi().deleteUserApi();
     }
-
     @Test
     @Owner("Trifonov Dmitriy")
     @DisplayName("Создание пользователя, UI")
