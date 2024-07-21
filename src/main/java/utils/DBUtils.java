@@ -69,4 +69,11 @@ public class DBUtils {
         );
         return map.toString();
     }
+    @Step("Получение суммы денег из БД после добавления")
+    public static String getAmountAfterAdding(int userID){
+        HashMap<String,String> map =getListFromBd(
+                "Select money from public.person where id = '"+ userID +"'"
+        );
+        return map.toString();
+    }
 }

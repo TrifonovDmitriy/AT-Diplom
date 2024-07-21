@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
@@ -107,8 +108,8 @@ public class UsersApiStep {
                 .assertThat().statusCode(200)
                 .extract().body().asString();
         JSONObject jsonObject = new JSONObject(responseAfterGiveMoney);
-        userID = jsonObject.getInt("id");
-        Logger.getGlobal().info("Пользователю с ID " + userID + " начислены деньги: " + amount);
-        DBUtils.getUser(userID);
+        double amountAfterAdding = jsonObject.getDouble("money");
+        Logger.getGlobal().info("Пользователю с ID " + userID + " начислены деньги. Итог: " + amountAfterAdding);
+        DBUtils.getAmountAfterAdding(userID);
     }
 }

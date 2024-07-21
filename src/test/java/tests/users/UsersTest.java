@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.testng.asserts.SoftAssert;
 import steps.users.API.UsersApiStep;
 import steps.users.UI.UsersUIStep;
+import utils.DBUtils;
+import web.pages.CarsPage;
 import web.pages.UserPage;
 import java.time.Duration;
 
@@ -31,6 +33,7 @@ public class UsersTest extends GeneralBasic {
     public void userDeleteApi() {
         new UsersApiStep().createUserApi().deleteUserApi();
     }
+
     @Test
     @Owner("Lozhkina Elena")
     @DisplayName("Создание пользователя и добавление денег, API")
@@ -78,7 +81,6 @@ public class UsersTest extends GeneralBasic {
     public void addMoneyUiTest() {
         UsersUIStep.createUserUi();
         String userID = new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(30)).getText();
-        System.out.println(userID);
         UsersUIStep.addMoneyUi(UsersUIStep.extractID(userID));
         String actualStatusCode = new UserPage().getStatus().shouldBe(visible, Duration.ofSeconds(30)).getText();
         Assertions.assertTrue(actualStatusCode.contains("Status: Successfully pushed, code: 200"), "Ожидаемый текст не соответствует действительному!");
