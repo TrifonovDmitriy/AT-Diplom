@@ -79,5 +79,18 @@ public class UsersApiStep {
                 .then()
                 .assertThat().statusCode(204)
                 .extract().body().asString();
+        DBUtils.getUser(userID);
+    }
+    @Step("Удаление пользователя/API")
+    public void deleteUserApi(int userID){
+        given().when()
+                .headers(new LoginApiStep().httpHeaderManager())
+                .pathParam("userID", userID)
+                .when()
+                .delete(MainProps.environmentProps.apiUrl() + "/user/{userID}")
+                .then()
+                .assertThat().statusCode(204)
+                .extract().body().asString();
+        DBUtils.getUser(userID);
     }
 }
