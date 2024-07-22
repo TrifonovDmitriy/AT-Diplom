@@ -5,7 +5,9 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -85,8 +87,8 @@ public class DBUtils {
     }
     @Step("Получение информации о парковочных местах из БД")
     public static String getParkingPlaces(int houseId){
-        HashMap<String,String> map = getListFromBd(
-                "Select * from public.parking_place where id ='" + houseId +"'"
+        List<HashMap> map = getListFromBdByWhile(
+                "Select * from public.parking_place where house_id ='" + houseId +"'"
         );
         return map.toString();
     }
@@ -96,5 +98,35 @@ public class DBUtils {
                 "Select * from public.person where id ='" + carID+"'"
         );
         return map.toString();
+    }
+
+    public static List<HashMap> selectValueMapFromDataBaseByWhile(String select) {
+        List<HashMap> resultMap = new ArrayList<>();
+        try (Connection connection = driverManager();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(select)) {
+            while (resultSet.next()) {
+                HashMap<String, String> result = new HashMap<>();
+                for (int i = 1; i < resultSet.getMetaData().getColumnCount() + 1; i++) {
+                    result.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
+                }
+                resultMap.add(result);
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return resultMap;
+    }
+
+    public static List<HashMap> getListFromBdByWhile(String sqlQuerry) {
+        Allure.addAttachment("SqlRequest", sqlQuerry);
+        Logger.getGlobal().info(sqlQuerry);
+        List<HashMap> map = selectValueMapFromDataBaseByWhile(sqlQuerry);
+        if (map != null) {
+            Allure.addAttachment("SqlResponse", map.toString());
+            Logger.getGlobal().info(map.toString());
+        }
+        return map;
     }
 }

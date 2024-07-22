@@ -19,7 +19,7 @@ import static io.restassured.RestAssured.given;
 public class UsersApiStep {
 //    private String request = null;
     private int userID;
-    private int amount = 2000;
+    private int amount = 10100100;
 
     //метод создаёт пользователя по заменяемым атрибутам файла json
 //    @Step("Создание пользователя API")
