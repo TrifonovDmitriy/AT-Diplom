@@ -23,7 +23,7 @@ public class HouseApiTest {
 
     @Test
     @Owner("Lozhkina Elena")
-    @DisplayName("Заселение пользователя в дом, API")
+    @DisplayName("Заселение (создание дома, создание юзера, заселение), API")
     public void settleApi(){
         new HouseApiStep().createHouseApi().settleUserApi();
     }
