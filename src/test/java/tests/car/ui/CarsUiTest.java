@@ -27,7 +27,7 @@ public class CarsUiTest extends GeneralBasic {
     public void sortByCarsID(){
         new CarsUiStep().carsReadAll();
         new CommonWebSteps().clickElement("ID", new CarsPage().buttonIdCars());
-        sleep(2000);
+        sleep(1000);
         String minIDstr = DBUtils.getMinCarID().replaceAll("\\D+","");
         int minID = Integer.parseInt(minIDstr);
         String idTableCarsStr = new CarsPage().idCarsTable().getText();
@@ -40,6 +40,7 @@ public class CarsUiTest extends GeneralBasic {
     public void createNewCar(){
         LoginStep.authorization();
         new CarsUiStep().createNewCar();
+//        sleep(200);
         new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(5));
         String actualTextStatus = new UserPage().getStatus().getText();
         SoftAssert softAssert = new SoftAssert();
