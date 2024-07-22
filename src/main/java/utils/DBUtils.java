@@ -111,7 +111,4 @@ public class DBUtils {
         );
     }
 
-    @Step("Проверка успешного удаления дома из базы")
-    public static void assertHouseDeleted(int houseId) {
-    }
 }

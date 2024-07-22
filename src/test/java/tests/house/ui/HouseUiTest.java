@@ -11,8 +11,7 @@ import utils.DBUtils;
 
 import java.util.HashMap;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HouseUiTest extends GeneralBasic {
 
@@ -101,7 +100,8 @@ public class HouseUiTest extends GeneralBasic {
         houseUiStep.deleteHouse(houseId);
 
         // Проверка базы данных
-        DBUtils.assertHouseDeleted(houseId);
+        HashMap<String, String> houseData = DBUtils.getHouseData(houseId);
+        assertTrue(houseData.isEmpty(), "Данные о доме должны быть пустыми после удаления.");
     }
 
 }
