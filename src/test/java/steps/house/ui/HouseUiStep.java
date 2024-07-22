@@ -1,9 +1,14 @@
 package steps.house.ui;
 
+import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
 import io.qameta.allure.Step;
 import web.pages.HousePage;
 import web.steps.CommonWebSteps;
+
+import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class HouseUiStep {
 
@@ -67,6 +72,14 @@ public class HouseUiStep {
     public void readAllHouses() {
         new CommonWebSteps().clickElement("Houses", new HousePage().housesList())
                 .clickElement("Read All", new HousePage().readAllHouses());
+
+        HousePage housePage = new HousePage();
+        assertAll(
+                "Проверка таблиц",
+                () -> housePage.houseInfoTable().shouldBe(Condition.visible),
+                () -> housePage.lodgersTable().shouldBe(Condition.visible),
+                () -> housePage.parkingsTable().shouldBe(Condition.visible)
+        );
     }
 
     @Step("Чтение информации о доме по ID")

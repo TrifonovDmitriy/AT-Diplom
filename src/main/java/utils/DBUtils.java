@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+
 /**
  * Класс подключения к БД и других методов для работы с БД
  */
@@ -96,5 +97,21 @@ public class DBUtils {
                 "Select * from public.person where id ='" + carID+"'"
         );
         return map.toString();
+    }
+
+    @Step("Проверка создания дома в базе данных")
+    public static HashMap<String, String> getHouseData(int houseId) {
+        return getListFromBd("Select * from public.house where id ='" + houseId + "'");
+    }
+
+    @Step("Проверка информации о жильцах в базе данных")
+    public static HashMap<String, String>  getLodgerData(int userId) {
+        return getListFromBd(
+                "Select house_id from public.person where id ='" + userId + "'"
+        );
+    }
+
+    @Step("Проверка успешного удаления дома из базы")
+    public static void assertHouseDeleted(int houseId) {
     }
 }
