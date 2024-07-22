@@ -21,12 +21,12 @@ public class HouseApiTest {
         new HouseApiStep().createHouseApi().changeHouseApi();
     }
 
-    @Test
-    @Owner("Lozhkina Elena")
-    @DisplayName("Заселение пользователя в дом, API")
-    public void settleApi(){
-        new HouseApiStep().createHouseApi().changeHouseApi();
-    }
-
+//    @Test
+//    @Owner("Lozhkina Elena")
+//    @DisplayName("Заселение пользователя в дом, API")
+//    public void settleApi(){
+//        new HouseApiStep().createHouseApi().changeHouseApi();
+//    }
+//
 
 }

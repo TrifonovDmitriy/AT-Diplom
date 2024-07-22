@@ -25,4 +25,7 @@ public class XPathBuilder {
     public static SelenideElement numberElement(String tag, String attribute, String param, String number) {
         return $x("//" + tag + "[@" + attribute + "='" + param + "']"+"["+number+"]");
     }
+    public static SelenideElement parentElement(String tag, String attribute, String param, String parent) {
+        return $x("//" + tag + "[@" + attribute + "='" + param + "']"+parent);
+    }
 }

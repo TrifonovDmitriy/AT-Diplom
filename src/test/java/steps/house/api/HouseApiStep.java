@@ -74,24 +74,24 @@ public class HouseApiStep {
                 .extract().body().asString();
         System.out.println(responce);
     }
-
-    @Step("Заселение, API")
-    public void settleApi(){
-        String responseAfterSettle = given().when()
-                .headers(new LoginApiStep().httpHeaderManager())
-                .pathParam("userID", userID)
-                .pathParam("houseID", houseID)
-                .when()
-                .post(MainProps.environmentProps.apiUrl() + "/house/{houseID}/settle/{userID}")
-                .then()
-                .assertThat().statusCode(200)
-                .extract().body().asString();
-        JSONObject jsonObject = new JSONObject(responseAfterGiveMoney);
-        double amountAfterAdding = jsonObject.getDouble("money");
-        Logger.getGlobal().info("Пользователь с ID = " + userID + " заселен в дом " + amountAfterAdding);
-        DBUtils.getAmountAfterAdding(userID);
-
-    }
+//
+//    @Step("Заселение, API")
+//    public void settleApi(){
+//        String responseAfterSettle = given().when()
+//                .headers(new LoginApiStep().httpHeaderManager())
+//                .pathParam("userID", userID)
+//                .pathParam("houseID", houseID)
+//                .when()
+//                .post(MainProps.environmentProps.apiUrl() + "/house/{houseID}/settle/{userID}")
+//                .then()
+//                .assertThat().statusCode(200)
+//                .extract().body().asString();
+//        JSONObject jsonObject = new JSONObject(responseAfterGiveMoney);
+//        double amountAfterAdding = jsonObject.getDouble("money");
+//        Logger.getGlobal().info("Пользователь с ID = " + userID + " заселен в дом " + amountAfterAdding);
+//        DBUtils.getAmountAfterAdding(userID);
+//
+//    }
 
 
 
