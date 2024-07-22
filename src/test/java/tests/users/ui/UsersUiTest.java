@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testng.asserts.SoftAssert;
+import steps.car.API.CarAPI;
 import steps.car.ui.CarsUiStep;
 import steps.users.API.UsersApiStep;
 import steps.users.UI.UsersUIStep;
@@ -73,12 +74,12 @@ public class UsersUiTest extends GeneralBasic {
     @Owner("Trifonov Dmitriy")
     public void endToEndUserMoneyCarBuyUi() {
         UsersUIStep.createUserUi();
-//        sleep(100);
+        sleep(100);
         String userID = new UserPage().getNewUserID().shouldBe(Condition.appear).shouldBe(visible, Duration.ofSeconds(5)).getText();
         Logger.getGlobal().info(userID);
         UsersUIStep.addMoneyUi(extractID(userID));
         new CarsUiStep().createNewCar();
-//        sleep(100);
+        sleep(100);
         String carID = new UserPage().getNewUserID().shouldBe(Condition.appear).shouldBe(visible, Duration.ofSeconds(5)).getText();
         Logger.getGlobal().info(carID);
         UsersUIStep.buyCarUi(userID, carID);
@@ -89,7 +90,5 @@ public class UsersUiTest extends GeneralBasic {
         int carIDint = Integer.parseInt(extractID(carID));
         DBUtils.getCar(carIDint);
         DBUtils.getUser(userIDint);
-//        new CarAPI().deleteCarApi(carIDint);
-//        new UsersApiStep().deleteUserApi(userIDint);
     }
 }
