@@ -1,21 +1,24 @@
 package tests.users;
 
 import base.GeneralBasic;
-import config.classes.MainProps;
+import com.codeborne.selenide.Condition;
 import io.qameta.allure.Owner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testng.asserts.SoftAssert;
+import steps.car.API.CarAPI;
 import steps.car.ui.CarsUiStep;
 import steps.users.API.UsersApiStep;
 import steps.users.UI.UsersUIStep;
+import utils.DBUtils;
 import web.pages.UserPage;
 import java.time.Duration;
+import java.util.logging.Logger;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
+import static steps.users.UI.UsersUIStep.extractID;
 
 public class UsersTest extends GeneralBasic {
     @Test
@@ -79,21 +82,30 @@ public class UsersTest extends GeneralBasic {
         UsersUIStep.createUserUi();
         String userID = new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(30)).getText();
         System.out.println(userID);
-        UsersUIStep.addMoneyUi(UsersUIStep.extractID(userID));
+        UsersUIStep.addMoneyUi(extractID(userID));
         String actualStatusCode = new UserPage().getStatus().shouldBe(visible, Duration.ofSeconds(30)).getText();
         Assertions.assertTrue(actualStatusCode.contains("Status: Successfully pushed, code: 200"), "Ожидаемый текст не соответствует действительному!");
     }
     @Test
-    @DisplayName("Покупка автомобиля")
+    @DisplayName("Создание пользователя, Пополнение денег, Создание автомобиля, Покупка автомобиля")
     @Owner("Trifonov Dmitriy")
-    public void bayCar(){
+    public void endToEndUserMoneyCarBuyUi(){
         UsersUIStep.createUserUi();
-        String userID = new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(30)).getText();
-        System.out.println(userID);
+        String userID = new UserPage().getNewUserID().shouldBe(Condition.appear).shouldBe(visible,Duration.ofSeconds(5)).getText();
+        Logger.getGlobal().info(userID);
+        UsersUIStep.addMoneyUi(extractID(userID));
         new CarsUiStep().createNewCar();
-        String carID = new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(30)).getText();
-        System.out.println(carID);
-        UsersUIStep.BayCarUi(userID,carID);
-        sleep(5000);
+        String carID = new UserPage().getNewUserID().shouldBe(Condition.appear).shouldBe(visible,Duration.ofSeconds(5)).getText();
+        Logger.getGlobal().info(carID);
+        UsersUIStep.buyCarUi(userID,carID);
+        sleep(500);
+        String actualStatusCode = new UserPage().getStatus().shouldBe(Condition.appear).shouldBe(visible,Duration.ofSeconds(5)).getText();
+        Assertions.assertTrue(actualStatusCode.contains("Status: Successfully pushed, code: 200"), "Ожидаемый текст не соответствует действительному!");
+        int userIDint = Integer.parseInt(extractID(userID));
+        int carIDint = Integer.parseInt(extractID(carID));
+        DBUtils.getCar(carIDint);
+        DBUtils.getUser(userIDint);
+        new CarAPI().deleteCarApi(carIDint);
+        new UsersApiStep().deleteUserApi(userIDint);
     }
 }

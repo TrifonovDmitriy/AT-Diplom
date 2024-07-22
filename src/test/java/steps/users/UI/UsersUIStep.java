@@ -14,11 +14,11 @@ public class UsersUIStep {
         LoginStep.authorization();
         new CommonWebSteps().clickElement("Users", new MainPage().usersList())
                 .clickElement("Create new", new MainPage().createNewUser());
-        new CommonWebSteps().sendKeys("First Name", new UserPage().fieldEnterFirstName(), "Василий")
-                .sendKeys("Last Name", new UserPage().fieldEnterLastName(), "Романов")
-                .sendKeys("Age",new UserPage().fieldEnterAge(),"18")
+        new CommonWebSteps().sendKeys("First Name", new UserPage().fieldEnterFirstName(), "Владимир")
+                .sendKeys("Last Name", new UserPage().fieldEnterLastName(), "Гончаров")
+                .sendKeys("Age",new UserPage().fieldEnterAge(),"25")
                 .clickElement("Sex", new UserPage().radioSexMale())
-                .sendKeys("Money", new UserPage().fieldEnterMoney(), "8000")
+                .sendKeys("Money", new UserPage().fieldEnterMoney(), "250000")
                 .clickElement("Push to API", new UserPage().buttonPush());
     }
     public static void createUserUiWithoutAge() {
@@ -61,10 +61,12 @@ public class UsersUIStep {
                 .sendKeys("Money", new UserPage().fieldEnterMoney(),"2000")
                 .clickElement("Push to API", new UserPage().buttonPush());
     }
-    public static void BayCarUi(String userID, String carID) {
+    public static void buyCarUi(String userID, String carID) {
         new CommonWebSteps().clickElement("Users", new MainPage().usersList())
                 .clickElement("Bay or sell car", new MainPage().bayOrSellCar());
         new CommonWebSteps().sendKeys("User ID", new UserPage().fieldEnterUserId(), extractID(userID))
-                .sendKeys("Car ID", new CarsPage().fieldEnterCarId(), extractID(carID));
+                .sendKeys("Car ID", new CarsPage().fieldEnterCarId(), extractID(carID))
+                .clickElement("BUY",new UserPage().radioBuyCar())
+                .clickElement("Push to api", new UserPage().buttonPush());
     }
 }

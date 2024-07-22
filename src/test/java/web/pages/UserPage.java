@@ -3,12 +3,6 @@ package web.pages;
 import com.codeborne.selenide.SelenideElement;
 import web.utils.XPathBuilder;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$x;
-
 public class UserPage {
 
     public SelenideElement fieldEnterFirstName() {
@@ -43,5 +37,8 @@ public class UserPage {
 
     public SelenideElement fieldEnterUserId() { return XPathBuilder.element("input", "id", "id_send");}
 
+    public SelenideElement radioBuyCar(){
+        return XPathBuilder.element("input","value","buyCar");
+    }
 }
 
