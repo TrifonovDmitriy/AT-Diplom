@@ -1,7 +1,6 @@
 package tests.house.ui;
 
 import base.GeneralBasic;
-import com.codeborne.selenide.Condition;
 import io.qameta.allure.Owner;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +12,6 @@ import steps.auth.UI.LoginStep;
 import steps.house.ui.HouseUiStep;
 import steps.users.UI.UsersUIStep;
 import utils.DBUtils;
-import web.pages.HousePage;
 import web.pages.UserPage;
 
 import java.util.HashMap;

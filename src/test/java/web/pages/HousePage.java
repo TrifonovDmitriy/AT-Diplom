@@ -78,22 +78,6 @@ public class HousePage {
         return XPathBuilder.containsElement("a", "text()", "Read one by ID");
     }
 
-    public SelenideElement housesInfoTable() {
-        return XPathBuilder.containsElement("table", "class", "table table-bordered");
-    }
-
-    public SelenideElement houseInfoTable() {
-        return XPathBuilder.containsElementInclude("table", "class", "table table-bordered", "/tbody/tr");
-    }
-
-    public SelenideElement lodgersTable() {
-        return XPathBuilder.containsElementInclude("table", "class", "tableLodgers table", "/tbody/tr");
-    }
-
-    public SelenideElement parkingsTable() {
-        return XPathBuilder.containsElementInclude("table", "class", "tableParkings table", "/tbody/tr");
-    }
-
     public SelenideElement houseInputField() {
         return XPathBuilder.element("input", "id", "house_input");
     }
