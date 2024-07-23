@@ -3,20 +3,22 @@ package steps.house.api;
 import config.classes.MainProps;
 import dto.House;
 import dto.ParkingPlace;
-import dto.User;
 import io.qameta.allure.Step;
 import org.json.JSONObject;
 import steps.auth.API.LoginApiStep;
+import steps.users.API.UsersApiStep;
 import utils.DBUtils;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
+
 import static io.restassured.RestAssured.given;
 
 
 public class HouseApiStep {
     private int houseID;
-    private int userID;
+
     @Step("Создание дома, API")
     public HouseApiStep createHouseApi() {
         ParkingPlace parkingPlaceOne = ParkingPlace.builder()
@@ -54,7 +56,7 @@ public class HouseApiStep {
     }
 
     @Step("Изменение дома, API")
-    public void changeHouseApi(){
+    public HouseApiStep changeHouseApi() {
         ParkingPlace parkingPlace = ParkingPlace.builder()
                 .id(houseID)
                 .isCovered(false)
@@ -69,7 +71,7 @@ public class HouseApiStep {
                 .build();
         String houseJson = house.toJson();
 
-        String responce = given()
+        given()
                 .headers(new LoginApiStep().httpHeaderManager())
                 .pathParams("houseID", houseID)
                 .body(houseJson)
@@ -78,33 +80,14 @@ public class HouseApiStep {
                 .then()
                 .assertThat().statusCode(202)
                 .extract().body().asString();
-        System.out.println(responce);
+        DBUtils.getHouse(houseID);
+        DBUtils.getParkingPlaces(houseID);
+        return this;
     }
 
     @Step("Заселение, API")
-    public void settleUserApi(){
-        User user = User.builder()
-                .age(25)
-                .firstName("Michael")
-                .id(10)
-                .money(155000)
-                .secondName("Kubikov")
-                .sex("MALE")
-                .build();
-        String userJson = user.toJson();
-        String response = given().when()
-                .headers(new LoginApiStep().httpHeaderManager())
-                .body(userJson)
-                .post(MainProps.environmentProps.apiUrl() + "/user")
-                .then()
-                .assertThat().statusCode(201)
-                .extract().body().asString();
-        JSONObject jsonObject = new JSONObject(response);
-        userID = jsonObject.getInt("id");
-        Logger.getGlobal().info("Создан пользователь с ID: " + userID);
-        DBUtils.getUser(userID);
-
-    given().when()
+    public void settleUserApi(int userID) {
+        given().when()
                 .headers(new LoginApiStep().httpHeaderManager())
                 .pathParam("houseID", houseID)
                 .pathParam("userID", userID)

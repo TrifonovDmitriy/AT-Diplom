@@ -87,7 +87,7 @@ public class DBUtils {
     }
     @Step("Получение информации о парковочных местах из БД")
     public static String getParkingPlaces(int houseId){
-        List<HashMap> map = getListFromBdByWhile(
+        HashMap<String, String> map = getListValuesFromBd(
                 "Select * from public.parking_place where house_id ='" + houseId +"'"
         );
         return map.toString();
@@ -100,33 +100,30 @@ public class DBUtils {
         return map.toString();
     }
 
-    public static List<HashMap> selectValueMapFromDataBaseByWhile(String select) {
-        List<HashMap> resultMap = new ArrayList<>();
-        try (Connection connection = driverManager();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(select)) {
-            while (resultSet.next()) {
-                HashMap<String, String> result = new HashMap<>();
-                for (int i = 1; i < resultSet.getMetaData().getColumnCount() + 1; i++) {
-                    result.put(resultSet.getMetaData().getColumnName(i), resultSet.getString(i));
-                }
-                resultMap.add(result);
-            }
-
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return resultMap;
-    }
-
-    public static List<HashMap> getListFromBdByWhile(String sqlQuerry) {
+    public static HashMap<String, String> getListValuesFromBd(String sqlQuerry) {
         Allure.addAttachment("SqlRequest", sqlQuerry);
         Logger.getGlobal().info(sqlQuerry);
-        List<HashMap> map = selectValueMapFromDataBaseByWhile(sqlQuerry);
+        HashMap<String, String> map = DBUtils.selectFewValueMapFromDataBase(sqlQuerry);
         if (map != null) {
             Allure.addAttachment("SqlResponse", map.toString());
             Logger.getGlobal().info(map.toString());
         }
         return map;
+    }
+
+    public static HashMap<String, String> selectFewValueMapFromDataBase(String select) {
+        HashMap<String, String> result = new HashMap<>();
+        try (Connection connection = driverManager();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(select)) {
+            int i = 0;
+            while (resultSet.next()) {
+                result.put(resultSet.getMetaData().getColumnName(1) + "_" + i, resultSet.getString(1));
+                i++;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }
