@@ -41,16 +41,12 @@ public class HousePage {
         return XPathBuilder.containsElement("button", "@class", "tableButton btn");
     }
 
-    public SelenideElement successMessage() {
-        return XPathBuilder.containsElement("button", "text()", "Status: Successfully pushed, code: 201");
-    }
-
-    public SelenideElement successMessageEvict() {
-        return XPathBuilder.containsElement("button", "text()", "Status: Successfully pushed, code: 200");
-    }
-
     public SelenideElement generatedHouseId() {
         return XPathBuilder.containsElement("button", "text()", "New house ID: ");
+    }
+
+    public SelenideElement housesPage(){
+        return XPathBuilder.elementText("button","text","Reload");
     }
 
     public SelenideElement settleOrEvictUser() {
@@ -58,30 +54,27 @@ public class HousePage {
     }
 
     public SelenideElement houseIdField() {
+
         return XPathBuilder.element("input", "id", "house_send");
     }
 
-//    public SelenideElement userIdField() {
-//        return XPathBuilder.element("input", "id", "userId");
-//    }
-
     public SelenideElement radioButtonSettle() {
+
         return XPathBuilder.element("input", "value", "settle");
     }
 
     public SelenideElement radioButtonEvict() {
+
         return XPathBuilder.element("input", "value", "evict");
     }
 
-    public SelenideElement deleteHouseButton() {
-        return XPathBuilder.containsElement("button", "text()", "Delete House");
-    }
-
     public SelenideElement readAllHouses() {
+
         return XPathBuilder.containsElement("a", "text()", "Read all");
     }
 
     public SelenideElement readHouseById() {
+
         return XPathBuilder.containsElement("a", "text()", "Read one by ID");
     }
 
@@ -104,5 +97,19 @@ public class HousePage {
     public SelenideElement houseInputField() {
         return XPathBuilder.element("input", "id", "house_input");
     }
+    public SelenideElement allDeleteLink() {
+        return XPathBuilder.containsElement("a", "text()", "All DELETE");
+    }
 
+    public SelenideElement successMessage204() {
+        return XPathBuilder.containsElementWithIndex("button", "@class", "status btn", 2);
+    }
+
+    public SelenideElement houseInputFieldDel() {
+        return XPathBuilder.elementWithIndex("input", "id", "house_input", 2);
+    }
+
+    public SelenideElement deleteHouseButton() {
+        return XPathBuilder.element("button", "value", "house");
+    }
 }

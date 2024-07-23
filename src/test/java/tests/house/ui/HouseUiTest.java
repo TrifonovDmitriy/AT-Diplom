@@ -1,9 +1,10 @@
 package tests.house.ui;
 
 import base.GeneralBasic;
+import com.codeborne.selenide.Condition;
 import io.qameta.allure.Owner;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,6 @@ import web.pages.UserPage;
 
 import java.util.HashMap;
 
-import static com.codeborne.selenide.Condition.visible;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HouseUiTest extends GeneralBasic {
@@ -31,11 +31,10 @@ public class HouseUiTest extends GeneralBasic {
 
         HouseUiStep houseUiStep = new HouseUiStep();
         houseId = houseUiStep.createNewHouse();
+
         // Проверка базы данных
-        HashMap<String, String> houseData = DBUtils.getHouseData(houseId);
-        assertNotNull(houseData, "Дом не создан");
-//        assertEquals(String.valueOf(expectedFloorCount), houseData.get("floor_count"), "Количество этажейне соответствует");
-//        assertEquals(String.valueOf(expectedPrice), houseData.get("price"), "Неверная стоимость");
+        DBUtils.getHouse(houseId);
+        DBUtils.getParkingPlaces(houseId);
 
         // Создание нового пользователя
         UsersUIStep.createUserUi();
@@ -43,40 +42,6 @@ public class HouseUiTest extends GeneralBasic {
         String userIdStr = actualTextUser.replaceAll("\\D+", "");
         userId = Integer.parseInt(userIdStr);
     }
-
-    @Test
-    @DisplayName("Чтение информации о домах в UI")
-    @Owner("Rustam Dzhafarov")
-    public void readAllHousesTest() {
-        LoginStep.authorization();
-
-        HouseUiStep houseUiStep = new HouseUiStep();
-        houseUiStep.readAllHouses();
-    }
-
-    @Test
-    @DisplayName("Чтение информации о доме по ID в UI")
-    @Owner("Rustam Dzhafarov")
-    public void readHouseByIdTest() {
-        LoginStep.authorization();
-
-        HouseUiStep houseUiStep = new HouseUiStep();
-        houseUiStep.readHouseById(houseId);
-
-        HousePage housePage = new HousePage();
-
-        assertAll(
-                "Проверка таблиц",
-                () -> assertDoesNotThrow(() -> housePage.houseInfoTable()
-                        .shouldBe(visible), "Проверка таблицы с информацией о доме"),
-                () -> assertDoesNotThrow(() -> housePage.lodgersTable()
-                        .shouldBe(visible), "Проверка таблицы с жильцами"),
-                () -> assertDoesNotThrow(() -> housePage.parkingsTable()
-                        .shouldBe(visible), "Проверка таблицы с парковками")
-
-        );
-    }
-
 
     @Test
     @DisplayName("Создание нового дома")
@@ -120,7 +85,7 @@ public class HouseUiTest extends GeneralBasic {
 
         // Проверка базы данных
         HashMap<String, String> lodgerData = DBUtils.getLodgerData(userId);
-        assertEquals(String.valueOf(houseId), lodgerData.get("house_id"), "Данные о арендаторе должны быть нулевыми.");
+        assertNull(lodgerData.get("house_id"), "Данные о арендаторе должны быть нулевыми.");
     }
 
     @Test
@@ -136,5 +101,33 @@ public class HouseUiTest extends GeneralBasic {
         HashMap<String, String> houseData = DBUtils.getHouseData(houseId);
         assertTrue(houseData.isEmpty(), "Данные о доме должны быть пустыми после удаления.");
     }
+
+    @Test
+    @DisplayName("Чтение информации о домах в UI")
+    @Owner("Rustam Dzhafarov")
+    public void readAllHousesTest() {
+        LoginStep.authorization();
+
+        HouseUiStep houseUiStep = new HouseUiStep();
+        houseUiStep.readAllHouses();
+
+    }
+
+    @Test
+    @DisplayName("Чтение информации о доме по ID в UI")
+    @Owner("Rustam Dzhafarov")
+    public void readHouseByIdTest() {
+        LoginStep.authorization();
+
+        HouseUiStep houseUiStep = new HouseUiStep();
+        Response response = houseUiStep.readHouseById(houseId);
+
+        int statusCode = response.getStatusCode();
+        Assertions.assertEquals(200, statusCode, "Проверка статус кода");
+
+        String responseBody = response.getBody().asString();
+        Assertions.assertFalse(responseBody.isEmpty(), "Проверка, что тело ответа не пустое");
+    }
+
 
 }

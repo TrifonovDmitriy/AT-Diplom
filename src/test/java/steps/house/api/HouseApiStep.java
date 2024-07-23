@@ -93,11 +93,15 @@ public class HouseApiStep {
 //
 //    }
 
-
-
-
-
-
+    @Step("Удаление дома")
+    public Response deleteHouse(int houseId) {
+        return given()
+                .pathParam("houseId", houseId)
+                .when()
+                .delete(MainProps.environmentProps.apiUrl() + "/house/{houseId}")
+                .then().log().all()
+                .extract().response();
+    }
 
 }
 

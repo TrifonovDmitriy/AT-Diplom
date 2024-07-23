@@ -1,6 +1,7 @@
 package steps.house.ui;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Selenide;
 import config.classes.MainProps;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
@@ -8,9 +9,10 @@ import web.pages.HousePage;
 import web.pages.UserPage;
 import web.steps.CommonWebSteps;
 
+import java.time.Duration;
+
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.hamcrest.Matchers.notNullValue;
 
 public class HouseUiStep {
 
@@ -18,12 +20,12 @@ public class HouseUiStep {
     public int createNewHouse() {
         new CommonWebSteps().clickElement("Houses", new HousePage().housesList())
                 .clickElement("Create New", new HousePage().createNewHouse());
-        new CommonWebSteps().sendKeys("Floor Count", new HousePage().floorCountField(), "5")
-                .sendKeys("Price", new HousePage().priceField(), "1000000")
-                .sendKeys("Parking 1", new HousePage().parkingFirstField(), "24")
-                .sendKeys("Parking 2", new HousePage().parkingSecondField(), "24")
-                .sendKeys("Parking 3", new HousePage().parkingThirdField(), "24")
-                .sendKeys("Parking 4", new HousePage().parkingFourthField(), "24")
+        new CommonWebSteps().sendKeys("Floor Count", new HousePage().floorCountField(), "4")
+                .sendKeys("Price", new HousePage().priceField(), "100000")
+                .sendKeys("Parking 1", new HousePage().parkingFirstField(), "2")
+                .sendKeys("Parking 2", new HousePage().parkingSecondField(), "2")
+                .sendKeys("Parking 3", new HousePage().parkingThirdField(), "2")
+                .sendKeys("Parking 4", new HousePage().parkingFourthField(), "2")
                 .clickElement("Submit", new HousePage().houseSubmitButton());
 
         // Извлечение сгенерированного ID
@@ -39,8 +41,8 @@ public class HouseUiStep {
     public Response settleUser(int houseId, int userId) {
         new CommonWebSteps().clickElement("Houses", new HousePage().housesList())
                 .clickElement("Settle or Evict User", new HousePage().settleOrEvictUser())
-                .sendKeys("House ID", new HousePage().houseIdField(), String.valueOf(houseId))
                 .sendKeys("User ID", new UserPage().fieldEnterUserId(), String.valueOf(userId))
+                .sendKeys("House ID", new HousePage().houseIdField(), String.valueOf(houseId))
                 .clickElement("Radio Button", new HousePage().radioButtonSettle())
                 .clickElement("Submit", new HousePage().houseSubmitButton());
 
@@ -70,30 +72,48 @@ public class HouseUiStep {
                 .extract().response();
     }
 
-    @Step("Удаление дома")
     public void deleteHouse(int houseId) {
-        new CommonWebSteps().clickElement("Houses", new HousePage().housesList())
-                .clickElement("Read One by ID", new HousePage().readHouseById())
-                .sendKeys("House ID", new HousePage().houseIdField(), String.valueOf(houseId))
-                .clickElement("Submit", new HousePage().houseSubmitButton())
-                .clickElement("Delete House", new HousePage().deleteHouseButton());
+        new CommonWebSteps().clickElement("All DELETE", new HousePage().allDeleteLink());
+
+        Selenide.switchTo().window(1);
+
+        new CommonWebSteps()
+                .sendKeys("House ID", new HousePage().houseInputFieldDel(), String.valueOf(houseId))
+                .clickElement("DELETE HOUSE", new HousePage().deleteHouseButton());
+        // Проверка успешного удаления
+        HousePage housePage = new HousePage();
+        housePage.successMessage204().shouldBe(Condition.visible);
+
+        Selenide.closeWindow();
+        Selenide.switchTo().window(0);
     }
 
     @Step("Чтение информации о домах")
     public void readAllHouses() {
-        new CommonWebSteps().clickElement("Houses", new HousePage().housesList())
+        HousePage housePage = new HousePage();
+        new CommonWebSteps().clickElement("Houses", housePage.housesList())
                 .clickElement("Read All", new HousePage().readAllHouses());
 
-        HousePage housePage = new HousePage();
-        housePage.housesInfoTable().shouldBe(Condition.visible);
+        housePage.housesPage().shouldBe(Condition.visible, Duration.ofSeconds(15));
 
     }
 
     @Step("Чтение информации о доме по ID")
-    public void readHouseById(int houseId) {
+    public Response readHouseById(int houseId) {
         new CommonWebSteps().clickElement("Houses", new HousePage().housesList())
                 .clickElement("Read One by ID", new HousePage().readHouseById())
                 .sendKeys("House ID", new HousePage().houseInputField(), String.valueOf(houseId))
-                .clickElement("Submit", new HousePage().houseSubmitButton());
+                .clickElement("Read", new HousePage().houseSubmitButton());
+
+        String apiUrl = MainProps.environmentProps.apiUrl();
+
+        return given()
+                .when()
+                .get(apiUrl + "/house/" + houseId)
+                .then().log().all()
+                .statusCode(200)
+                .body(notNullValue())
+                .extract()
+                .response();
     }
 }
