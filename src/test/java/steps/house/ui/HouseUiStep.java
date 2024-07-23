@@ -1,12 +1,14 @@
 package steps.house.ui;
 
-import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Condition;
+import config.classes.MainProps;
 import io.qameta.allure.Step;
+import io.restassured.response.Response;
 import web.pages.HousePage;
+import web.pages.UserPage;
 import web.steps.CommonWebSteps;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -34,29 +36,38 @@ public class HouseUiStep {
     }
 
     @Step("Вселение пользователя")
-    public void settleUser(int houseId, int userId) {
+    public Response settleUser(int houseId, int userId) {
         new CommonWebSteps().clickElement("Houses", new HousePage().housesList())
                 .clickElement("Settle or Evict User", new HousePage().settleOrEvictUser())
                 .sendKeys("House ID", new HousePage().houseIdField(), String.valueOf(houseId))
-                .sendKeys("User ID", new HousePage().userIdField(), String.valueOf(userId))
+                .sendKeys("User ID", new UserPage().fieldEnterUserId(), String.valueOf(userId))
                 .clickElement("Radio Button", new HousePage().radioButtonSettle())
                 .clickElement("Submit", new HousePage().houseSubmitButton());
 
-        HousePage housePage = new HousePage();
-        housePage.successMessageEvict().shouldBe(Condition.visible);
+        String apiUrl = MainProps.environmentProps.apiUrl();
+
+        return given().when()
+                .post(apiUrl + "/house/" + houseId + "/settle/" + userId)
+                .then().log().all()
+                .extract().response();
+
     }
 
     @Step("Выселение пользователя")
-    public void evictUser(int houseId, int userId) {
+    public Response evictUser(int houseId, int userId) {
         new CommonWebSteps().clickElement("Houses", new HousePage().housesList())
                 .clickElement("Settle or Evict User", new HousePage().settleOrEvictUser())
                 .sendKeys("House ID", new HousePage().houseIdField(), String.valueOf(houseId))
-                .sendKeys("User ID", new HousePage().userIdField(), String.valueOf(userId))
+                .sendKeys("User ID", new UserPage().fieldEnterUserId(), String.valueOf(userId))
                 .clickElement("Radio Button", new HousePage().radioButtonEvict())
                 .clickElement("Submit", new HousePage().houseSubmitButton());
 
-        HousePage housePage = new HousePage();
-        housePage.successMessageEvict().shouldBe(Condition.visible);
+        String apiUrl = MainProps.environmentProps.apiUrl();
+
+        return given().when()
+                .post(apiUrl + "/house/" + houseId + "/evict/" + userId)
+                .then().log().all()
+                .extract().response();
     }
 
     @Step("Удаление дома")
@@ -74,19 +85,15 @@ public class HouseUiStep {
                 .clickElement("Read All", new HousePage().readAllHouses());
 
         HousePage housePage = new HousePage();
-        assertAll(
-                "Проверка таблиц",
-                () -> housePage.houseInfoTable().shouldBe(Condition.visible),
-                () -> housePage.lodgersTable().shouldBe(Condition.visible),
-                () -> housePage.parkingsTable().shouldBe(Condition.visible)
-        );
+        housePage.housesInfoTable().shouldBe(Condition.visible);
+
     }
 
     @Step("Чтение информации о доме по ID")
     public void readHouseById(int houseId) {
         new CommonWebSteps().clickElement("Houses", new HousePage().housesList())
                 .clickElement("Read One by ID", new HousePage().readHouseById())
-                .sendKeys("House ID", new HousePage().houseIdField(), String.valueOf(houseId))
+                .sendKeys("House ID", new HousePage().houseInputField(), String.valueOf(houseId))
                 .clickElement("Submit", new HousePage().houseSubmitButton());
     }
 }

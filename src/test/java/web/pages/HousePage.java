@@ -38,7 +38,7 @@ public class HousePage {
     }
 
     public SelenideElement houseSubmitButton() {
-        return XPathBuilder.containsElement("button", "text()", "Submit");
+        return XPathBuilder.containsElement("button", "@class", "tableButton btn");
     }
 
     public SelenideElement successMessage() {
@@ -58,19 +58,19 @@ public class HousePage {
     }
 
     public SelenideElement houseIdField() {
-        return XPathBuilder.element("input", "id", "house_id");
+        return XPathBuilder.element("input", "id", "house_send");
     }
 
-    public SelenideElement userIdField() {
-        return XPathBuilder.element("input", "id", "userId");
-    }
+//    public SelenideElement userIdField() {
+//        return XPathBuilder.element("input", "id", "userId");
+//    }
 
     public SelenideElement radioButtonSettle() {
-        return XPathBuilder.numberElement("input", "type", "radio", "1");
+        return XPathBuilder.element("input", "value", "settle");
     }
 
     public SelenideElement radioButtonEvict() {
-        return XPathBuilder.numberElement("input", "type", "radio", "2");
+        return XPathBuilder.element("input", "value", "evict");
     }
 
     public SelenideElement deleteHouseButton() {
@@ -85,6 +85,10 @@ public class HousePage {
         return XPathBuilder.containsElement("a", "text()", "Read one by ID");
     }
 
+    public SelenideElement housesInfoTable() {
+        return XPathBuilder.containsElement("table", "class", "table table-bordered");
+    }
+
     public SelenideElement houseInfoTable() {
         return XPathBuilder.containsElementInclude("table", "class", "table table-bordered", "/tbody/tr");
     }
@@ -96,4 +100,9 @@ public class HousePage {
     public SelenideElement parkingsTable() {
         return XPathBuilder.containsElementInclude("table", "class", "tableParkings table", "/tbody/tr");
     }
+
+    public SelenideElement houseInputField() {
+        return XPathBuilder.element("input", "id", "house_input");
+    }
+
 }

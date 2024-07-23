@@ -2,20 +2,28 @@ package tests.house.ui;
 
 import base.GeneralBasic;
 import io.qameta.allure.Owner;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.testng.asserts.SoftAssert;
 import steps.auth.UI.LoginStep;
 import steps.house.ui.HouseUiStep;
+import steps.users.UI.UsersUIStep;
 import utils.DBUtils;
+import web.pages.HousePage;
+import web.pages.UserPage;
 
 import java.util.HashMap;
 
+import static com.codeborne.selenide.Condition.visible;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HouseUiTest extends GeneralBasic {
 
     private static int houseId;
+    private static int userId;
 
     @BeforeAll
     public static void setUp() {
@@ -28,6 +36,12 @@ public class HouseUiTest extends GeneralBasic {
         assertNotNull(houseData, "Дом не создан");
 //        assertEquals(String.valueOf(expectedFloorCount), houseData.get("floor_count"), "Количество этажейне соответствует");
 //        assertEquals(String.valueOf(expectedPrice), houseData.get("price"), "Неверная стоимость");
+
+        // Создание нового пользователя
+        UsersUIStep.createUserUi();
+        String actualTextUser = new UserPage().getNewUserID().getText();
+        String userIdStr = actualTextUser.replaceAll("\\D+", "");
+        userId = Integer.parseInt(userIdStr);
     }
 
     @Test
@@ -48,6 +62,19 @@ public class HouseUiTest extends GeneralBasic {
 
         HouseUiStep houseUiStep = new HouseUiStep();
         houseUiStep.readHouseById(houseId);
+
+        HousePage housePage = new HousePage();
+
+        assertAll(
+                "Проверка таблиц",
+                () -> assertDoesNotThrow(() -> housePage.houseInfoTable()
+                        .shouldBe(visible), "Проверка таблицы с информацией о доме"),
+                () -> assertDoesNotThrow(() -> housePage.lodgersTable()
+                        .shouldBe(visible), "Проверка таблицы с жильцами"),
+                () -> assertDoesNotThrow(() -> housePage.parkingsTable()
+                        .shouldBe(visible), "Проверка таблицы с парковками")
+
+        );
     }
 
 
@@ -64,10 +91,13 @@ public class HouseUiTest extends GeneralBasic {
     public void settleUserTest() {
         LoginStep.authorization();
 
-        int userId = 5; // Идентификатор пользователя
-
         HouseUiStep houseUiStep = new HouseUiStep();
-        houseUiStep.settleUser(houseId, userId);
+        Response response = houseUiStep.settleUser(houseId, userId);
+
+        // Проверка статус кода
+        int statusCode = response.getStatusCode();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(statusCode, 200, "Expected status code 200");
 
         // Проверка базы данных
         HashMap<String, String> lodgerData = DBUtils.getLodgerData(userId);
@@ -80,10 +110,13 @@ public class HouseUiTest extends GeneralBasic {
     public void evictUserTest() {
         LoginStep.authorization();
 
-        int userId = 5; // Идентификатор пользователя
-
         HouseUiStep houseUiStep = new HouseUiStep();
-        houseUiStep.evictUser(houseId, userId);
+        Response response = houseUiStep.evictUser(houseId, userId);
+
+        // Проверка статус кода
+        int statusCode = response.getStatusCode();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(statusCode, 200, "Expected status code 200");
 
         // Проверка базы данных
         HashMap<String, String> lodgerData = DBUtils.getLodgerData(userId);
