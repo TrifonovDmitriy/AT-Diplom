@@ -9,6 +9,7 @@ import steps.auth.API.LoginApiStep;
 import utils.DBUtils;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
@@ -17,17 +18,23 @@ public class HouseApiStep {
     private int houseID;
     @Step("Создание дома, API")
     public HouseApiStep createHouseApi() {
-        ParkingPlace parkingPlace = ParkingPlace.builder()
+        ParkingPlace parkingPlaceOne = ParkingPlace.builder()
                 .id(10)
                 .isCovered(true)
                 .isWarm(true)
-                .placesCount(28)
+                .placesCount(14)
+                .build();
+        ParkingPlace parkingPlaceTwo = ParkingPlace.builder()
+                .id(10)
+                .isCovered(false)
+                .isWarm(false)
+                .placesCount(33)
                 .build();
         House house = House.builder()
                 .floorCount(14)
                 .id(10)
-                .parkingPlaces(Collections.singletonList(parkingPlace))
-                .price(1111)
+                .parkingPlaces(List.of(parkingPlaceOne, parkingPlaceTwo))
+                .price(2000)
                 .build();
         String houseJson = house.toJson();
         String response = given().when()

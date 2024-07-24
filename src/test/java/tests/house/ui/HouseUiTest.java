@@ -74,7 +74,7 @@
 //        LoginStep.authorization();
 //
 //        HouseUiStep houseUiStep = new HouseUiStep();
-//        Response response = houseUiStep.evictUser(houseId, userId);
+//        new houseUiStep.evictUser(houseId, userId);
 //
 //        // Проверка статус кода
 //        int statusCode = response.getStatusCode();

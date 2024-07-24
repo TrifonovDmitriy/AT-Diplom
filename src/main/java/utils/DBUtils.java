@@ -85,8 +85,8 @@ public class DBUtils {
     }
     @Step("Получение информации о парковочных местах из БД")
     public static String getParkingPlaces(int houseId){
-        HashMap<String,String> map = getListFromBd(
-                "Select * from public.parking_place where id ='" + houseId +"'"
+        HashMap<String,String> map = getListValuesFromBd(
+                "Select * from public.parking_place where house_id ='" + houseId +"'"
         );
         return map.toString();
     }
