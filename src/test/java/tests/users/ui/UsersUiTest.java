@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testng.asserts.SoftAssert;
-import steps.car.API.CarAPI;
 import steps.car.UI.CarsUiStep;
 import steps.users.API.UsersApiStep;
 import steps.users.UI.UsersUIStep;
@@ -62,6 +61,7 @@ public class UsersUiTest extends GeneralBasic {
     @DisplayName("Добавление денег, UI")
     public void addMoneyUiTest() {
         UsersUIStep.createUserUi();
+        sleep(200);
         String userID = new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(30)).getText();
         System.out.println(userID);
         UsersUIStep.addMoneyUi(extractID(userID));

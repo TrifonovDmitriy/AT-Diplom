@@ -4,6 +4,7 @@ import io.qameta.allure.Owner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import steps.house.api.HouseApiStep;
+import steps.users.API.UsersApiStep;
 
 public class HouseApiTest {
 
@@ -21,12 +22,10 @@ public class HouseApiTest {
         new HouseApiStep().createHouseApi().changeHouseApi();
     }
 
-//    @Test
-//    @Owner("Lozhkina Elena")
-//    @DisplayName("Заселение пользователя в дом, API")
-//    public void settleApi(){
-//        new HouseApiStep().createHouseApi().changeHouseApi();
-//    }
-//
-
+    @Test
+    @Owner("Lozhkina Elena")
+    @DisplayName("Заселение (создание дома, создание юзера, заселение), API")
+    public void settleApi(){
+        new HouseApiStep().createHouseApi().settleUserApi(new UsersApiStep().createUserApi().getUserID());
+    }
 }

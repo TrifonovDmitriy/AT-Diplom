@@ -8,7 +8,6 @@ import java.sql.*;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-
 /**
  * Класс подключения к БД и других методов для работы с БД
  */
@@ -86,15 +85,15 @@ public class DBUtils {
     }
     @Step("Получение информации о парковочных местах из БД")
     public static String getParkingPlaces(int houseId){
-        HashMap<String,String> map = getListFromBd(
-                "Select * from public.parking_place where id ='" + houseId +"'"
+        HashMap<String,String> map = getListValuesFromBd(
+                "Select * from public.parking_place where house_id ='" + houseId +"'"
         );
         return map.toString();
     }
     @Step("Получение автомобиля из базы данных")
     public static String getCar(int carID){
         HashMap<String,String> map =getListFromBd(
-                "Select * from public.car where id ='" + carID+"'"
+                "Select * from public.person where id ='" + carID+"'"
         );
         return map.toString();
     }
@@ -111,4 +110,31 @@ public class DBUtils {
         );
     }
 
+
+    public static HashMap<String, String> getListValuesFromBd(String sqlQuerry) {
+        Allure.addAttachment("SqlRequest", sqlQuerry);
+        Logger.getGlobal().info(sqlQuerry);
+        HashMap<String, String> map = DBUtils.selectFewValueMapFromDataBase(sqlQuerry);
+        if (map != null) {
+            Allure.addAttachment("SqlResponse", map.toString());
+            Logger.getGlobal().info(map.toString());
+        }
+        return map;
+    }
+
+    public static HashMap<String, String> selectFewValueMapFromDataBase(String select) {
+        HashMap<String, String> result = new HashMap<>();
+        try (Connection connection = driverManager();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(select)) {
+            int i = 0;
+            while (resultSet.next()) {
+                result.put(resultSet.getMetaData().getColumnName(1) + "_" + i, resultSet.getString(1));
+                i++;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

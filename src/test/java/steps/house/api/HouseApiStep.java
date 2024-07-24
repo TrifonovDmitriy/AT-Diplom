@@ -9,27 +9,32 @@ import steps.auth.API.LoginApiStep;
 import utils.DBUtils;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
-import io.restassured.response.Response;
 
 public class HouseApiStep {
     private int houseID;
-    private int userID;
     @Step("Создание дома, API")
     public HouseApiStep createHouseApi() {
-        ParkingPlace parkingPlace = ParkingPlace.builder()
+        ParkingPlace parkingPlaceOne = ParkingPlace.builder()
                 .id(10)
                 .isCovered(true)
                 .isWarm(true)
-                .placesCount(28)
+                .placesCount(14)
+                .build();
+        ParkingPlace parkingPlaceTwo = ParkingPlace.builder()
+                .id(10)
+                .isCovered(false)
+                .isWarm(false)
+                .placesCount(33)
                 .build();
         House house = House.builder()
                 .floorCount(14)
                 .id(10)
-                .parkingPlaces(Collections.singletonList(parkingPlace))
-                .price(8000111)
+                .parkingPlaces(List.of(parkingPlaceOne, parkingPlaceTwo))
+                .price(2000)
                 .build();
         String houseJson = house.toJson();
         String response = given().when()
@@ -48,7 +53,7 @@ public class HouseApiStep {
     }
 
     @Step("Изменение дома, API")
-    public void changeHouseApi(){
+    public HouseApiStep changeHouseApi(){
         ParkingPlace parkingPlace = ParkingPlace.builder()
                 .id(houseID)
                 .isCovered(false)
@@ -63,7 +68,7 @@ public class HouseApiStep {
                 .build();
         String houseJson = house.toJson();
 
-        String responce = given()
+        given()
                 .headers(new LoginApiStep().httpHeaderManager())
                 .pathParams("houseID", houseID)
                 .body(houseJson)
@@ -72,36 +77,24 @@ public class HouseApiStep {
                 .then()
                 .assertThat().statusCode(202)
                 .extract().body().asString();
-        System.out.println(responce);
+        DBUtils.getHouse(houseID);
+        DBUtils.getParkingPlaces(houseID);
+        return this;
     }
-//
-//    @Step("Заселение, API")
-//    public void settleApi(){
-//        String responseAfterSettle = given().when()
-//                .headers(new LoginApiStep().httpHeaderManager())
-//                .pathParam("userID", userID)
-//                .pathParam("houseID", houseID)
-//                .when()
-//                .post(MainProps.environmentProps.apiUrl() + "/house/{houseID}/settle/{userID}")
-//                .then()
-//                .assertThat().statusCode(200)
-//                .extract().body().asString();
-//        JSONObject jsonObject = new JSONObject(responseAfterGiveMoney);
-//        double amountAfterAdding = jsonObject.getDouble("money");
-//        Logger.getGlobal().info("Пользователь с ID = " + userID + " заселен в дом " + amountAfterAdding);
-//        DBUtils.getAmountAfterAdding(userID);
-//
-//    }
 
-    @Step("Удаление дома")
-    public Response deleteHouse(int houseId) {
-        return given()
-                .pathParam("houseId", houseId)
+    @Step("Заселение, API")
+    public void settleUserApi(int userID) {
+        given().when()
+                .headers(new LoginApiStep().httpHeaderManager())
+                .pathParam("houseID", houseID)
+                .pathParam("userID", userID)
                 .when()
-                .delete(MainProps.environmentProps.apiUrl() + "/house/{houseId}")
-                .then().log().all()
-                .extract().response();
+                .post(MainProps.environmentProps.apiUrl() + "/house/{houseID}/settle/{userID}")
+                .then()
+                .assertThat().statusCode(200)
+                .extract().body().asString();
+        Logger.getGlobal().info("Пользователь с ID = " + userID + " заселен в дом " + houseID);
+        DBUtils.getUser(userID);
     }
-
 }
 
