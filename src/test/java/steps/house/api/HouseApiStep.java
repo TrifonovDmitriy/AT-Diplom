@@ -29,7 +29,7 @@ public class HouseApiStep {
                 .floorCount(14)
                 .id(10)
                 .parkingPlaces(Collections.singletonList(parkingPlace))
-                .price(8000111)
+                .price(1111)
                 .build();
         String houseJson = house.toJson();
         String response = given().when()

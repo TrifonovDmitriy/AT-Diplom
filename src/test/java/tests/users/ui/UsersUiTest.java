@@ -62,6 +62,7 @@ public class UsersUiTest extends GeneralBasic {
     @DisplayName("Добавление денег, UI")
     public void addMoneyUiTest() {
         UsersUIStep.createUserUi();
+        sleep(200);
         String userID = new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(30)).getText();
         System.out.println(userID);
         UsersUIStep.addMoneyUi(extractID(userID));

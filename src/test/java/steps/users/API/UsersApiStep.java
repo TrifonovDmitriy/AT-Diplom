@@ -18,37 +18,11 @@ import static io.restassured.RestAssured.given;
 
 public class UsersApiStep {
 //    private String request = null;
-    private static int userID;
-    public static int getUserID() {
+    private int userID;
+    public int getUserID() {
         return userID;
     }
     private int amount = 10100100;
-
-    //метод создаёт пользователя по заменяемым атрибутам файла json
-//    @Step("Создание пользователя API")
-//    public void createUserApi(String age, String firstName, String money, String secondName, String sex) {
-//        try {
-//            request = new String(Files.readAllBytes(Paths.get("src/test/resources/requests/createUser.json")),
-//                    StandardCharsets.UTF_8)
-//                    .replace("${age}", age)
-//                    .replace("${firstName}", firstName)
-//                    .replace("${money}", money)
-//                    .replace("${secondName}", secondName)
-//                    .replace("${sex}", sex);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        String response = given().when()
-//                .headers(new LoginApiStep().httpHeaderManager())
-//                .body(request)
-//                .post(MainProps.environmentProps.apiUrl() + "/user")
-//                .then()
-//                .assertThat().statusCode(201)
-//                .extract().body().asString();
-//        JSONObject jsonObject = new JSONObject(response);
-//        int userID = jsonObject.getInt("id");
-//        System.out.println("Создан пользователь с ID: " + userID);
-//    }
 
     @Step("Создание пользователя API")
     public UsersApiStep createUserApi() {

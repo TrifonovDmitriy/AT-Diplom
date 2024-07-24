@@ -26,7 +26,6 @@ public class HouseApiTest {
     @Owner("Lozhkina Elena")
     @DisplayName("Заселение (создание дома, создание юзера, заселение), API")
     public void settleApi(){
-        new UsersApiStep().createUserApi();
-        new HouseApiStep().createHouseApi().settleUserApi(UsersApiStep.getUserID());
+        new HouseApiStep().createHouseApi().settleUserApi(new UsersApiStep().createUserApi().getUserID());
     }
 }
