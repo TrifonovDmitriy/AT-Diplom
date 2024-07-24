@@ -14,87 +14,73 @@ import utils.DBUtils;
 import web.pages.UserPage;
 
 import java.util.HashMap;
+import static com.codeborne.selenide.Selenide.sleep;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HouseUiTest extends GeneralBasic {
-
     @Test
     @DisplayName("Создание нового дома")
     @Owner("Rustam Dzhafarov")
     public void createNewHouseTest() {
         LoginStep.authorization();
-
         HouseUiStep houseUiStep = new HouseUiStep();
         int houseId = houseUiStep.createNewHouse();
-
         // Проверка базы данных
         DBUtils.getHouse(houseId);
         DBUtils.getParkingPlaces(houseId);
     }
-
     @Test
     @DisplayName("Вселение пользователя в дом")
     @Owner("Rustam Dzhafarov")
     public void settleUserTest() {
         LoginStep.authorization();
-
          // Создание нового дома
         HouseUiStep houseUiStep = new HouseUiStep();
         int houseId = houseUiStep.createNewHouse();
-
+        sleep(300);
         // Создание нового пользователя
         UsersUIStep.createUserUi();
+        sleep(300);
         String actualTextUser = new UserPage().getNewUserID().getText();
         String userIdStr = actualTextUser.replaceAll("\\D+", "");
         int userId = Integer.parseInt(userIdStr);
-
-
         // Вселение пользователя
         Response response = houseUiStep.settleUser(houseId, userId);
-
         // Проверка статус кода
         int statusCode = response.getStatusCode();
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(statusCode, 200, "Expected status code 200");
-
+        softAssert.assertEquals(statusCode, 200, "Код ответа отличный от ожидаемого");
         // Проверка базы данных
         HashMap<String, String> lodgerData = DBUtils.getLodgerData(userId);
-        assertEquals(String.valueOf(houseId), lodgerData.get("house_id"), "Данные о арендаторе не должны быть нулевыми.");
+        assertEquals(String.valueOf(houseId), lodgerData.get("house_id"), "Данные о арендаторе не должны быть null.");
     }
-
-
     @Test
     @DisplayName("Выселение пользователя из дома")
     @Owner("Rustam Dzhafarov")
     public void evictUserTest() {
         LoginStep.authorization();
-
         // Создание нового дома
         HouseUiStep houseUiStep = new HouseUiStep();
         int houseId = houseUiStep.createNewHouse();
-
+        sleep(300);
         // Создание нового пользователя
         UsersUIStep.createUserUi();
+        sleep(300);
         String actualTextUser = new UserPage().getNewUserID().getText();
         String userIdStr = actualTextUser.replaceAll("\\D+", "");
         int userId = Integer.parseInt(userIdStr);
-
-
         // Вселение пользователя
         houseUiStep.settleUser(houseId, userId);
-
         // Выселение пользователя
         Response response = houseUiStep.evictUser(houseId, userId);
-
         // Проверка статус кода
         int statusCode = response.getStatusCode();
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(statusCode, 200, "Expected status code 200");
-
         // Проверка базы данных
         HashMap<String, String> lodgerData = DBUtils.getLodgerData(userId);
-        assertNull(lodgerData.get("house_id"), "Данные о арендаторе должны быть нулевыми.");
+        assertNull(lodgerData.get("house_id"), "Данные о арендаторе должны быть null.");
     }
 
     @Test
@@ -102,11 +88,9 @@ public class HouseUiTest extends GeneralBasic {
     @Owner("Rustam Dzhafarov")
     public void deleteHouseTest() {
         LoginStep.authorization();
-
         HouseUiStep houseUiStep = new HouseUiStep();
         int houseId = houseUiStep.createNewHouse();
         houseUiStep.deleteHouse(houseId);
-
         // Проверка базы данных
         HashMap<String, String> houseData = DBUtils.getHouseData(houseId);
         assertTrue(houseData.isEmpty(), "Данные о доме должны быть пустыми после удаления.");
@@ -117,10 +101,8 @@ public class HouseUiTest extends GeneralBasic {
     @Owner("Rustam Dzhafarov")
     public void readAllHousesTest() {
         LoginStep.authorization();
-
         HouseUiStep houseUiStep = new HouseUiStep();
         houseUiStep.readAllHouses();
-
     }
 
     @Test
@@ -128,19 +110,12 @@ public class HouseUiTest extends GeneralBasic {
     @Owner("Rustam Dzhafarov")
     public void readHouseByIdTest() {
         LoginStep.authorization();
-
         HouseUiStep houseUiStep = new HouseUiStep();
         int houseId = houseUiStep.createNewHouse();
-
         Response response = houseUiStep.readHouseById(houseId);
-
-
         int statusCode = response.getStatusCode();
-        Assertions.assertEquals(200, statusCode, "Проверка статус кода");
-
+        Assertions.assertEquals(200, statusCode, "Код ответа отличный от ожидаемого");
         String responseBody = response.getBody().asString();
-        Assertions.assertFalse(responseBody.isEmpty(), "Проверка, что тело ответа не пустое");
+        Assertions.assertFalse(responseBody.isEmpty(), "Тело ответа пустое");
     }
-
-
 }

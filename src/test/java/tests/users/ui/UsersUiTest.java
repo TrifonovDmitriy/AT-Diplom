@@ -65,6 +65,7 @@ public class UsersUiTest extends GeneralBasic {
         String userID = new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(30)).getText();
         System.out.println(userID);
         UsersUIStep.addMoneyUi(extractID(userID));
+        sleep(200);
         String actualStatusCode = new UserPage().getStatus().shouldBe(visible, Duration.ofSeconds(30)).getText();
         Assertions.assertTrue(actualStatusCode.contains("Status: Successfully pushed, code: 200"), "Ожидаемый текст не соответствует действительному!");
     }
