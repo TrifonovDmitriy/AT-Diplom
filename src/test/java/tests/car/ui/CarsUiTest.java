@@ -7,9 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testng.asserts.SoftAssert;
 import steps.auth.UI.LoginStep;
-import steps.car.ui.CarsUiStep;
-import steps.users.API.UsersApiStep;
-import steps.users.UI.UsersUIStep;
+import steps.car.UI.CarsUiStep;
 import utils.DBUtils;
 import web.pages.CarsPage;
 import web.pages.UserPage;
@@ -48,5 +46,16 @@ public class CarsUiTest extends GeneralBasic {
         String actualTextUser = new UserPage().getNewUserID().getText();
         softAssert.assertTrue(actualTextUser.contains("New car ID"), "Поле не содержит: New car ID");
         softAssert.assertAll();
+    }
+    @Test
+    @DisplayName("Cоздание нового автомобиля. 400 статус код")
+    @Owner("Glagolev Sergey")
+    public void createNewCarWithWrongEngine(){
+        LoginStep.authorization();
+        new CarsUiStep().createNewCarWithWrongEngine();
+        new UserPage().getNewUserID().shouldBe(visible, Duration.ofSeconds(5));
+        String actualTextStatus = new UserPage().getStatus().getText();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals("Status: AxiosError: Request failed with status code 400", actualTextStatus, "Ожидаемый текст не соответствует действительному!");
     }
 }
