@@ -12,11 +12,9 @@ import java.util.Collections;
 import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
-import io.restassured.response.Response;
 
 public class HouseApiStep {
     private int houseID;
-    private int userID;
     @Step("Создание дома, API")
     public HouseApiStep createHouseApi() {
         ParkingPlace parkingPlace = ParkingPlace.builder()
@@ -91,16 +89,5 @@ public class HouseApiStep {
         Logger.getGlobal().info("Пользователь с ID = " + userID + " заселен в дом " + houseID);
         DBUtils.getUser(userID);
     }
-
-    @Step("Удаление дома")
-    public Response deleteHouse(int houseId) {
-        return given()
-                .pathParam("houseId", houseId)
-                .when()
-                .delete(MainProps.environmentProps.apiUrl() + "/house/{houseId}")
-                .then().log().all()
-                .extract().response();
-    }
-
 }
 

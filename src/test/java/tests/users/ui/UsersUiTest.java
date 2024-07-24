@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testng.asserts.SoftAssert;
-import steps.car.API.CarAPI;
 import steps.car.UI.CarsUiStep;
 import steps.users.API.UsersApiStep;
 import steps.users.UI.UsersUIStep;

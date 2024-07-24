@@ -6,18 +6,11 @@ import io.qameta.allure.Step;
 import org.json.JSONObject;
 import steps.auth.API.LoginApiStep;
 import utils.DBUtils;
-
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
 
 public class UsersApiStep {
-//    private String request = null;
     private int userID;
     public int getUserID() {
         return userID;
