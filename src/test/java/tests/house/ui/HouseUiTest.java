@@ -4,7 +4,6 @@ import base.GeneralBasic;
 import io.qameta.allure.Owner;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testng.asserts.SoftAssert;
@@ -20,32 +19,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HouseUiTest extends GeneralBasic {
 
-    private static int houseId;
-    private static int userId;
-
-    @BeforeAll
-    public static void setUp() {
-        LoginStep.authorization();
-
-        HouseUiStep houseUiStep = new HouseUiStep();
-        houseId = houseUiStep.createNewHouse();
-
-        // Проверка базы данных
-        DBUtils.getHouse(houseId);
-        DBUtils.getParkingPlaces(houseId);
-
-        // Создание нового пользователя
-        UsersUIStep.createUserUi();
-        String actualTextUser = new UserPage().getNewUserID().getText();
-        String userIdStr = actualTextUser.replaceAll("\\D+", "");
-        userId = Integer.parseInt(userIdStr);
-    }
-
     @Test
     @DisplayName("Создание нового дома")
     @Owner("Rustam Dzhafarov")
     public void createNewHouseTest() {
-        // Тест создан для setup
+        LoginStep.authorization();
+
+        HouseUiStep houseUiStep = new HouseUiStep();
+        int houseId = houseUiStep.createNewHouse();
+
+        // Проверка базы данных
+        DBUtils.getHouse(houseId);
+        DBUtils.getParkingPlaces(houseId);
     }
 
     @Test
@@ -54,7 +39,18 @@ public class HouseUiTest extends GeneralBasic {
     public void settleUserTest() {
         LoginStep.authorization();
 
+         // Создание нового дома
         HouseUiStep houseUiStep = new HouseUiStep();
+        int houseId = houseUiStep.createNewHouse();
+
+        // Создание нового пользователя
+        UsersUIStep.createUserUi();
+        String actualTextUser = new UserPage().getNewUserID().getText();
+        String userIdStr = actualTextUser.replaceAll("\\D+", "");
+        int userId = Integer.parseInt(userIdStr);
+
+
+        // Вселение пользователя
         Response response = houseUiStep.settleUser(houseId, userId);
 
         // Проверка статус кода
@@ -67,13 +63,28 @@ public class HouseUiTest extends GeneralBasic {
         assertEquals(String.valueOf(houseId), lodgerData.get("house_id"), "Данные о арендаторе не должны быть нулевыми.");
     }
 
+
     @Test
     @DisplayName("Выселение пользователя из дома")
     @Owner("Rustam Dzhafarov")
     public void evictUserTest() {
         LoginStep.authorization();
 
+        // Создание нового дома
         HouseUiStep houseUiStep = new HouseUiStep();
+        int houseId = houseUiStep.createNewHouse();
+
+        // Создание нового пользователя
+        UsersUIStep.createUserUi();
+        String actualTextUser = new UserPage().getNewUserID().getText();
+        String userIdStr = actualTextUser.replaceAll("\\D+", "");
+        int userId = Integer.parseInt(userIdStr);
+
+
+        // Вселение пользователя
+        houseUiStep.settleUser(houseId, userId);
+
+        // Выселение пользователя
         Response response = houseUiStep.evictUser(houseId, userId);
 
         // Проверка статус кода
@@ -93,6 +104,7 @@ public class HouseUiTest extends GeneralBasic {
         LoginStep.authorization();
 
         HouseUiStep houseUiStep = new HouseUiStep();
+        int houseId = houseUiStep.createNewHouse();
         houseUiStep.deleteHouse(houseId);
 
         // Проверка базы данных
@@ -118,7 +130,10 @@ public class HouseUiTest extends GeneralBasic {
         LoginStep.authorization();
 
         HouseUiStep houseUiStep = new HouseUiStep();
+        int houseId = houseUiStep.createNewHouse();
+
         Response response = houseUiStep.readHouseById(houseId);
+
 
         int statusCode = response.getStatusCode();
         Assertions.assertEquals(200, statusCode, "Проверка статус кода");

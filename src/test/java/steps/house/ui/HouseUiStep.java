@@ -8,9 +8,9 @@ import io.restassured.response.Response;
 import web.pages.HousePage;
 import web.pages.UserPage;
 import web.steps.CommonWebSteps;
-
 import java.time.Duration;
 
+import static com.codeborne.selenide.Selenide.refresh;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -30,6 +30,8 @@ public class HouseUiStep {
 
         // Извлечение сгенерированного ID
         HousePage housePage = new HousePage();
+//        sleep(1000);
+
         housePage.generatedHouseId().shouldBe(Condition.visible);
         String newHouseIdStr = housePage.generatedHouseId().getText().replaceAll("\\D+", "");
         int newHouseId = Integer.parseInt(newHouseIdStr);
@@ -57,6 +59,7 @@ public class HouseUiStep {
 
     @Step("Выселение пользователя")
     public Response evictUser(int houseId, int userId) {
+        refresh();
         new CommonWebSteps().clickElement("Houses", new HousePage().housesList())
                 .clickElement("Settle or Evict User", new HousePage().settleOrEvictUser())
                 .sendKeys("House ID", new HousePage().houseIdField(), String.valueOf(houseId))
