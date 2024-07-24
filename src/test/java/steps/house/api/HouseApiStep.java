@@ -6,38 +6,30 @@ import dto.ParkingPlace;
 import io.qameta.allure.Step;
 import org.json.JSONObject;
 import steps.auth.API.LoginApiStep;
-import steps.users.API.UsersApiStep;
 import utils.DBUtils;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
-
+import io.restassured.response.Response;
 
 public class HouseApiStep {
     private int houseID;
-
+    private int userID;
     @Step("Создание дома, API")
     public HouseApiStep createHouseApi() {
-        ParkingPlace parkingPlaceOne = ParkingPlace.builder()
+        ParkingPlace parkingPlace = ParkingPlace.builder()
                 .id(10)
                 .isCovered(true)
                 .isWarm(true)
-                .placesCount(14)
-                .build();
-        ParkingPlace parkingPlaceTwo = ParkingPlace.builder()
-                .id(10)
-                .isCovered(false)
-                .isWarm(false)
-                .placesCount(33)
+                .placesCount(28)
                 .build();
         House house = House.builder()
                 .floorCount(14)
                 .id(10)
-                .parkingPlaces(List.of(parkingPlaceOne, parkingPlaceTwo))
-                .price(2000)
+                .parkingPlaces(Collections.singletonList(parkingPlace))
+                .price(8000111)
                 .build();
         String houseJson = house.toJson();
         String response = given().when()
@@ -56,7 +48,7 @@ public class HouseApiStep {
     }
 
     @Step("Изменение дома, API")
-    public HouseApiStep changeHouseApi() {
+    public HouseApiStep changeHouseApi(){
         ParkingPlace parkingPlace = ParkingPlace.builder()
                 .id(houseID)
                 .isCovered(false)
@@ -99,5 +91,16 @@ public class HouseApiStep {
         Logger.getGlobal().info("Пользователь с ID = " + userID + " заселен в дом " + houseID);
         DBUtils.getUser(userID);
     }
+
+    @Step("Удаление дома")
+    public Response deleteHouse(int houseId) {
+        return given()
+                .pathParam("houseId", houseId)
+                .when()
+                .delete(MainProps.environmentProps.apiUrl() + "/house/{houseId}")
+                .then().log().all()
+                .extract().response();
+    }
+
 }
 

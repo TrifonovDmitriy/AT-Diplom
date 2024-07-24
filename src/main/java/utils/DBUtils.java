@@ -5,9 +5,7 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -87,18 +85,31 @@ public class DBUtils {
     }
     @Step("Получение информации о парковочных местах из БД")
     public static String getParkingPlaces(int houseId){
-        HashMap<String, String> map = getListValuesFromBd(
-                "Select * from public.parking_place where house_id ='" + houseId +"'"
+        HashMap<String,String> map = getListFromBd(
+                "Select * from public.parking_place where id ='" + houseId +"'"
         );
         return map.toString();
     }
     @Step("Получение автомобиля из базы данных")
     public static String getCar(int carID){
         HashMap<String,String> map =getListFromBd(
-                "Select * from public.car where id ='" + carID+"'"
+                "Select * from public.person where id ='" + carID+"'"
         );
         return map.toString();
     }
+
+    @Step("Проверка создания дома в базе данных")
+    public static HashMap<String, String> getHouseData(int houseId) {
+        return getListFromBd("Select * from public.house where id ='" + houseId + "'");
+    }
+
+    @Step("Проверка информации о жильцах в базе данных")
+    public static HashMap<String, String>  getLodgerData(int userId) {
+        return getListFromBd(
+                "Select house_id from public.person where id ='" + userId + "'"
+        );
+    }
+
 
     public static HashMap<String, String> getListValuesFromBd(String sqlQuerry) {
         Allure.addAttachment("SqlRequest", sqlQuerry);

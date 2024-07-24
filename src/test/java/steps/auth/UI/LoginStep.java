@@ -16,8 +16,8 @@ public class LoginStep extends GeneralBasic {
     @Step("Авторизация")
     public static void authorization() {
         open(MainProps.webProps.getUrl());
-        new CommonWebSteps().sendKeys("Enter your email", new MainPage().fieldEnterEmail(), "user@pflb.ru")
-                .sendKeys("Enter your password", new MainPage().fieldEnterPass(), "user")
+        new CommonWebSteps().sendKeys("Enter your email", new MainPage().fieldEnterEmail(), MainProps.loginProps.apiLogin())
+                .sendKeys("Enter your password", new MainPage().fieldEnterPass(), MainProps.loginProps.apiPassword())
                 .clickElement("GO", new MainPage().buttonGo())
                 .acceptAlert("Successful authorization");
     }

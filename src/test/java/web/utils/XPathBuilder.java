@@ -28,4 +28,12 @@ public class XPathBuilder {
     public static SelenideElement parentElement(String tag, String attribute, String param, String parent) {
         return $x("//" + tag + "[@" + attribute + "='" + param + "']"+parent);
     }
+    // Новый метод для элемента с индексом
+    public static SelenideElement elementWithIndex(String tag, String attribute, String param, int index) {
+        return $x("(//" + tag + "[@" + attribute + "='" + param + "'])[" + index + "]");
+    }
+    // Новый метод для элемента с contains и индексом
+    public static SelenideElement containsElementWithIndex(String tag, String attribute, String name, int index) {
+        return $x("(//" + tag + "[contains(" + attribute + ",'" + name + "')])[" + index + "]");
+    }
 }
