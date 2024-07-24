@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.testng.asserts.SoftAssert;
 import steps.car.API.CarAPI;
-import steps.car.ui.CarsUiStep;
+import steps.car.UI.CarsUiStep;
 import steps.users.API.UsersApiStep;
 import steps.users.UI.UsersUIStep;
 import utils.DBUtils;
