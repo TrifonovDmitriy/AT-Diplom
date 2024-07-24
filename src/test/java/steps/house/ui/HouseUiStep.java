@@ -11,6 +11,7 @@ import web.steps.CommonWebSteps;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.refresh;
+import static com.codeborne.selenide.Selenide.sleep;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -30,8 +31,7 @@ public class HouseUiStep {
 
         // Извлечение сгенерированного ID
         HousePage housePage = new HousePage();
-//        sleep(1000);
-
+        sleep(100);
         housePage.generatedHouseId().shouldBe(Condition.visible);
         String newHouseIdStr = housePage.generatedHouseId().getText().replaceAll("\\D+", "");
         int newHouseId = Integer.parseInt(newHouseIdStr);
@@ -85,6 +85,7 @@ public class HouseUiStep {
                 .clickElement("DELETE HOUSE", new HousePage().deleteHouseButton());
         // Проверка успешного удаления
         HousePage housePage = new HousePage();
+        sleep(100);
         housePage.successMessage204().shouldBe(Condition.visible);
 
         Selenide.closeWindow();
@@ -96,7 +97,7 @@ public class HouseUiStep {
         HousePage housePage = new HousePage();
         new CommonWebSteps().clickElement("Houses", housePage.housesList())
                 .clickElement("Read All", new HousePage().readAllHouses());
-
+        sleep(100);
         housePage.housesPage().shouldBe(Condition.visible, Duration.ofSeconds(15));
 
     }

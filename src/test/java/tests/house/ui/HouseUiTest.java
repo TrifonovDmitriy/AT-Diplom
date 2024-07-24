@@ -91,6 +91,7 @@ public class HouseUiTest extends GeneralBasic {
         HouseUiStep houseUiStep = new HouseUiStep();
         int houseId = houseUiStep.createNewHouse();
         houseUiStep.deleteHouse(houseId);
+        sleep(300);
         // Проверка базы данных
         HashMap<String, String> houseData = DBUtils.getHouseData(houseId);
         assertTrue(houseData.isEmpty(), "Данные о доме должны быть пустыми после удаления.");

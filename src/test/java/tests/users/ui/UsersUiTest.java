@@ -2,6 +2,7 @@ package tests.users.ui;
 
 import base.GeneralBasic;
 import com.codeborne.selenide.Condition;
+import dto.User;
 import io.qameta.allure.Owner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -78,6 +79,7 @@ public class UsersUiTest extends GeneralBasic {
         sleep(100);
         String userID = new UserPage().getNewUserID().shouldBe(Condition.appear).shouldBe(visible, Duration.ofSeconds(5)).getText();
         Logger.getGlobal().info(userID);
+        User user = User.builder().id(Integer.parseInt(extractID(userID))).build();
         UsersUIStep.addMoneyUi(extractID(userID));
         new CarsUiStep().createNewCar();
         sleep(100);
@@ -87,9 +89,8 @@ public class UsersUiTest extends GeneralBasic {
         sleep(300);
         String actualStatusCode = new UserPage().getStatus().shouldBe(Condition.appear).shouldBe(visible, Duration.ofSeconds(5)).getText();
         Assertions.assertTrue(actualStatusCode.contains("Status: Successfully pushed, code: 200"), "Ожидаемый текст не соответствует действительному!");
-        int userIDint = Integer.parseInt(extractID(userID));
         int carIDint = Integer.parseInt(extractID(carID));
         DBUtils.getCar(carIDint);
-        DBUtils.getUser(userIDint);
+        DBUtils.getUser(user.getId());
     }
 }

@@ -1,8 +1,0 @@
-{
-  "age": "${age}",
-  "firstName": "${firstName}",
-  "id": 10,
-  "money": "${money}",
-  "secondName": "${secondName}",
-  "sex": "${sex}"
-}

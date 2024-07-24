@@ -93,7 +93,7 @@ public class DBUtils {
     @Step("Получение автомобиля из базы данных")
     public static String getCar(int carID){
         HashMap<String,String> map =getListFromBd(
-                "Select * from public.person where id ='" + carID+"'"
+                "Select * from public.car where id ='" + carID+"'"
         );
         return map.toString();
     }
